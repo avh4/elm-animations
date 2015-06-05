@@ -1,68 +1,41 @@
 import Html exposing (Html)
 import Html.Attributes as Html
-import Time
+import Time exposing (Time)
+import Animation.Last exposing (..)
+import Color exposing (Color)
+import Easing
 
--- TODO: yellowCircle fades in and out
--- TODO: largeBlueBox/smallRedBox positions/sizes transition
--- TODO: largeBlueBox/smallRedBox cross fade during transition
+yellowCircle : Float -> Html
+yellowCircle alpha =
+    Html.img
+    [ Html.src "yellowCircle.png"
+    , Html.style [("opacity", toString alpha)]
+    ] []
 
-yellowCircle : Html
-yellowCircle = Html.img [Html.src "yellowCircle.png"] []
-
-largeBlueBox : Html
-largeBlueBox = 
+box : Int -> Color -> Html
+box size color =
     let
         style =
-            [ ("background", "#77f")
-            , ("width", "250px")
-            , ("height", "250px")
-            , ("transition", "width 1s, height 1s, background 1s")
+            [ background color
+            , width size
+            , height size
             ]
     in
         Html.div [Html.style style] []
 
-smallRedBox : Html
-smallRedBox = 
+render time model =
     let
-        style =
-            [ ("background", "#f77")
-            , ("width", "40px")
-            , ("height", "40px")
-            , ("margin", "20px")
-            , ("transition", "width 1s, height 1s, background 1s")
-            ]
+        ease = animateOnOff 0 Easing.easeInOutQuad time model
     in
-        Html.div [Html.style style] []
+        Html.div []
+            [ box (ease easeInt 250 40) (ease Easing.color Color.blue Color.red)
+            , yellowCircle (ease Easing.float 0 1)
+            ]
 
-render : Bool -> Html
-render b =
-    if b
-        then
-            Html.div []
-            [ largeBlueBox
-            , yellowCircle
-            ] |> fadeIn 0.5
-        else
-            smallRedBox |> fadeIn 0.5
+init = animationState True
 
-fadeIn m d html = animation m
-    { view: \t _ -> html |> withOpacity t
-    , duration: d
-    }
+step (time,a) model = case (currentValue model) of
+    True -> startAnimation Time.second time False model
+    False -> startAnimation Time.second time True model
 
-step : a -> Bool -> Bool
-step _ m = case m of
-    True -> False
-    False -> True
-
-main = Signal.map render (Time.every 1000 |> Signal.foldp step True)
-
-
-
-
-{-
-    ANIMATION CASES
-
-      - an element changes explicit size
-      - an element changes color
--}
+main = animationSignal init step render (Time.every 1000)

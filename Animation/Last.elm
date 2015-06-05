@@ -80,6 +80,10 @@ startAnimation duration t v (start0,end0,v0) =
 animationState : a -> AnimationState a
 animationState a = (0, 1, a)
 
+currentValue : AnimationState a -> a
+currentValue (_, _, a) = a
+
+animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> Signal a -> Signal h
 animationSignal init step render signal =
     let
         time = Time.fps 60 |> Time.timestamp |> Signal.map fst
