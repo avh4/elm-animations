@@ -21,15 +21,15 @@ box x y =
 
 render time model =
     let
-        ease = animateIntTuple Easing.easeInOutQuad time model
+        ease = currentValue time model
     in
         Html.div []
             [ box (ease |> fst) (ease |> snd)
             ]
 
-init = animationState (40,400)
+init = animationState (Easing.pair easeInt) (40,400)
 
 step (time,(x,y)) model =
-    startAnimation Time.second time (x,y) model
+    startAnimation Easing.easeInOutQuad Time.second time (x,y) model
 
 main = animationSignal init step render (Signal.sampleOn Mouse.clicks Mouse.position)

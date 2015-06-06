@@ -14,9 +14,9 @@ import Animation.Last exposing (..)
 -- -- DEMO APP
 -- --
 
-box time model delay =
+box time (_,model) =
     let
-        ease = animateOnOff (time-delay) model
+        ease = animateOnOff time model
         size = ease easeInt 100 200
     in
         [ Html.div
@@ -30,8 +30,8 @@ box time model delay =
         ] |> Html.div [Html.style [width 200, height 200, background Color.lightGrey, ("display", "inline-block")]]
 
 render time model =
-    [1..8]
-    |> List.map ((*) 50 >> box time model)
+    model
+    |> List.map (box time)
     |> Html.div []
     |> \html -> Html.div []
         [ html
@@ -41,14 +41,17 @@ render time model =
 
 tbox = Signal.mailbox Init
 
-init = animationState False
+init : Model
+init =
+    [0..7]
+    |> List.map (\i -> (i,onOffAnimationState False))
 
 type Action = Animate Bool | Init
-type alias Model = AnimationState Bool
+type alias Model = List (Int,AnimationState Float)
 
 step : (Time,Action) -> Model -> Model
 step (time,action) model = case action of
     Init -> model
-    Animate value -> startAnimation Easing.easeInOutQuad Time.second time value model
+    Animate value -> model |> List.map (\(i,m) -> (i,startOnOffAnimation Easing.easeInOutQuad Time.second (time + (toFloat i)*50) value m))
 
 main = animationSignal init step render tbox.signal

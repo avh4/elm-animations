@@ -37,8 +37,8 @@ circle (x,y) f =
         Html.div [Html.style style] []
 render time model =
     let
-        ease = animateIntTuple time model.location
-        easeClick = animateValue Easing.float time model.click
+        ease = currentValue time model.location
+        easeClick = currentValue time model.click
     in
         Html.div [Html.style [("position", "relative")]]
             [ box (ease |> fst) (ease |> snd)
@@ -46,8 +46,8 @@ render time model =
             ]
 
 init = 
-    { location = animationState (40,400)
-    , click = animationState 1.0
+    { location = animationState (Easing.pair easeInt) (40,400)
+    , click = animationState Easing.float 1.0
     , clickLocation = (0,0)
     }
 

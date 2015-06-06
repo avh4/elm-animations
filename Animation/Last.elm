@@ -56,45 +56,43 @@ easeInt from to v =
 -- --
 
 type alias Ease e = Interpolation e -> e -> e -> e
-type alias Animation t e = Time -> AnimationState t -> Ease e
-type alias AnimationState t = (Time,Time,Easing,t,t)
+type alias AnimationState t = (Time,Time,Easing,Interpolation t,t,t)
 
-animateOnOff : Animation Bool a
-animateOnOff t (start,end,easing,_,v) = --TODO: use from
-    let
-        duration = end - start
-        t' = case v of
-            True -> t - start |> max 0
-            False -> (duration - (t - start)) |> max 0
-    in
-        \interp from to -> Easing.ease easing interp from to duration t'
+animateOnOff : Time -> AnimationState Float -> Ease e
+animateOnOff t (start,end,easing,fInterp,fFrom,fTo) =
+    \interp from to ->
+        Easing.ease easing fInterp fFrom fTo (end-start) (t-start)
+        |> interp from to
 
-
-animateValue : Interpolation a -> Time -> AnimationState a -> a
-animateValue interp t (start,end,easing,from,to) =
+currentValue : Time -> AnimationState a -> a
+currentValue t (start,end,easing,interp,from,to) =
     Easing.ease easing interp from to (end-start) (t-start)
 
-animateIntTuple : Time -> AnimationState (Int,Int) -> (Int,Int)
-animateIntTuple = animateValue (Easing.pair easeInt)
-
 startAnimation : Easing -> Time -> Time -> a -> AnimationState a -> AnimationState a
-startAnimation easing duration t v (start0,end0,easing0,v00,v0) =
-    if  | end0 < t -> (t,t+duration,easing,v0,v)
+startAnimation easing duration t v (start0,end0,easing0,interp,v00,v0) =
+    if  | end0 < t -> (t,t+duration,easing,interp,v0,v)
         | otherwise -> 
             let t' = t-(end0-t)
-            in (t',t'+duration,easing,v0,v)
+            in (t',t'+duration,easing,interp,v0,v)
+
+startOnOffAnimation : Easing -> Time -> Time -> Bool -> AnimationState Float -> AnimationState Float
+startOnOffAnimation easing duration t v =
+    startAnimation easing duration t (if v then 1.0 else 0.0)
 
 clearAnimation : a -> AnimationState a -> AnimationState a
-clearAnimation v (_,_,_,_,_) = (0, 1, Easing.linear, v, v)
+clearAnimation v (_,_,_,interp,_,_) = (0, 1, Easing.linear, interp, v, v)
 
-animationState : a -> AnimationState a
-animationState v = (0, 1, Easing.linear, v, v)
+animationState : Interpolation a -> a -> AnimationState a
+animationState interp v = (0, 1, Easing.linear, interp, v, v)
 
---currentValue : Time -> AnimationState a -> a
---currentValue (_, _, _, _, a) = a
+onOffAnimationState : Bool -> AnimationState Float
+onOffAnimationState v = animationState Easing.float (if v then 1.0 else 0.0)
 
 currentTargetValue : AnimationState a -> a
-currentTargetValue (_, _, _, _, a) = a
+currentTargetValue (_, _, _, _, _, a) = a
+
+currentOnOffTargetValue : AnimationState Float -> Bool
+currentOnOffTargetValue (_, _, _, _, _, f) = f == 1.0
 
 animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> Signal a -> Signal h
 animationSignal init step render signal =
