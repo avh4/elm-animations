@@ -69,9 +69,13 @@ animateOnOff delay easing t (start,end,_,v) = --TODO: use from
     in
         \interp from to -> Easing.ease easing interp from to duration t'
 
+
+animateValue : Easing.Interpolation a -> Easing.Easing -> Time -> AnimationState a -> a
+animateValue interp easing t (start,end,from,to) =
+    Easing.ease easing interp from to (end-start) (t-start)
+
 animateIntTuple : Easing.Easing -> Time -> AnimationState (Int,Int) -> (Int,Int)
-animateIntTuple easing t (start,end,from,to) =
-    Easing.ease easing (Easing.pair easeInt) from to (end-start) (t-start)
+animateIntTuple = animateValue (Easing.pair easeInt)
 
 startAnimation : Time -> Time -> a -> AnimationState a -> AnimationState a
 startAnimation duration t v (start0,end0,v00,v0) =
@@ -80,8 +84,11 @@ startAnimation duration t v (start0,end0,v00,v0) =
             let t' = t-(end0-t)
             in (t',t'+duration,v0,v)
 
+clearAnimation : a -> AnimationState a -> AnimationState a
+clearAnimation v _ = (0, 1, v, v)
+
 animationState : a -> AnimationState a
-animationState a = (0, 1, a, a)
+animationState v = (0, 1, v, v)
 
 currentValue : AnimationState a -> a
 currentValue (_, _, _, a) = a
