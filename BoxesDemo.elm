@@ -16,7 +16,7 @@ import Animation.Last exposing (..)
 
 box time model delay =
     let
-        ease = animateOnOff delay Easing.easeInOutQuad time model
+        ease = animateOnOff Easing.easeInOutQuad (time-delay) model
         size = ease easeInt 100 200
     in
         [ Html.div

@@ -25,7 +25,7 @@ box size color =
 
 render time model =
     let
-        ease = animateOnOff 0 Easing.easeInOutQuad time model
+        ease = animateOnOff Easing.easeInOutQuad time model
     in
         Html.div []
             [ box (ease easeInt 250 40) (ease Easing.color Color.blue Color.red)

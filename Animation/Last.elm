@@ -59,13 +59,13 @@ type alias Ease a = Easing.Interpolation a -> a -> a -> a
 type alias Animation t a = Time -> AnimationState t -> Ease a
 type alias AnimationState a = (Time,Time,a,a)
 
-animateOnOff : Float -> Easing.Easing -> Animation Bool a
-animateOnOff delay easing t (start,end,_,v) = --TODO: use from
+animateOnOff : Easing.Easing -> Animation Bool a
+animateOnOff easing t (start,end,_,v) = --TODO: use from
     let
         duration = end - start
         t' = case v of
-            True -> (t - delay) - start |> max 0
-            False -> (duration - ((t - delay) - start)) |> max 0
+            True -> t - start |> max 0
+            False -> (duration - (t - start)) |> max 0
     in
         \interp from to -> Easing.ease easing interp from to duration t'
 
