@@ -69,11 +69,9 @@ currentValue t (start,end,easing,interp,from,to) =
         | otherwise -> Easing.ease easing interp from to (end-start) (t-start)
 
 startAnimation : Easing -> Time -> Time -> a -> AnimationState a -> AnimationState a
-startAnimation easing duration t v (start0,end0,easing0,interp,v00,v0) =
+startAnimation easing duration t v ((start0,end0,easing0,interp,v00,v0) as m) =
     if  | end0 < t -> (t,t+duration,easing,interp,v0,v)
-        | otherwise -> 
-            let t' = t-(end0-t)
-            in (t',t'+duration,easing,interp,v0,v)
+        | otherwise -> (t,t+duration,easing,interp,currentValue t m,v)
 
 startOnOffAnimation : Easing -> Time -> Time -> Bool -> AnimationState Float -> AnimationState Float
 startOnOffAnimation easing duration t v =
