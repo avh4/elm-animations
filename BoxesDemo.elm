@@ -14,7 +14,7 @@ import Animation.Last exposing (..)
 -- -- DEMO APP
 -- --
 
-box time (_,model) =
+box time (i,model) =
     let
         ease = animateOnOff time model
         size = ease easeInt 100 200
@@ -24,8 +24,8 @@ box time (_,model) =
                 [ width size, height size
                 , background <| ease Easing.color Color.red Color.blue
                 , transform [rotate <| ease Easing.float 0 180]]
-            , Html.onMouseEnter tbox.address (Animate True)
-            , Html.onMouseLeave tbox.address (Animate False)
+            , Html.onMouseEnter tbox.address (Animate i True)
+            , Html.onMouseLeave tbox.address (Animate i False)
             ] []
         ] |> Html.div [Html.style [width 200, height 200, background Color.lightGrey, ("display", "inline-block")]]
 
@@ -46,12 +46,18 @@ init =
     [0..7]
     |> List.map (\i -> (i,onOffAnimationState False))
 
-type Action = Animate Bool | Init
+type Action = Animate Int Bool | Init
 type alias Model = List (Int,AnimationState Float)
 
 step : (Time,Action) -> Model -> Model
 step (time,action) model = case action of
     Init -> model
-    Animate value -> model |> List.map (\(i,m) -> (i,startOnOffAnimation Easing.easeInOutQuad Time.second (time + (toFloat i)*50) value m))
+    Animate focus value ->
+        let
+            anim = startOnOffAnimation Easing.easeInOutQuad Time.second
+            delay i = abs (focus-i) |> toFloat |> (*) 100
+            start (i,m) = (i,anim (time + (delay i)) value m)
+        in
+            model |> List.map start
 
 main = animationSignal init step render tbox.signal
