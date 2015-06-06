@@ -59,14 +59,14 @@ type alias Ease e = Interpolation e -> e -> e -> e
 type alias AnimationState t = (Time,Time,Easing,Interpolation t,t,t)
 
 animateOnOff : Time -> AnimationState Float -> Ease e
-animateOnOff t (start,end,easing,fInterp,fFrom,fTo) =
-    \interp from to ->
-        Easing.ease easing fInterp fFrom fTo (end-start) (t-start)
-        |> interp from to
+animateOnOff time state interp from to =
+    currentValue time state |> interp from to
 
 currentValue : Time -> AnimationState a -> a
 currentValue t (start,end,easing,interp,from,to) =
-    Easing.ease easing interp from to (end-start) (t-start)
+    if  | t < start -> from
+        | t > end -> to
+        | otherwise -> Easing.ease easing interp from to (end-start) (t-start)
 
 startAnimation : Easing -> Time -> Time -> a -> AnimationState a -> AnimationState a
 startAnimation easing duration t v (start0,end0,easing0,interp,v00,v0) =
