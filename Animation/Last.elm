@@ -57,9 +57,10 @@ easeInt from to v =
 
 type alias Ease a = Easing.Interpolation a -> a -> a -> a
 type alias Animation t a = Time -> AnimationState t -> Ease a
+type alias AnimationState a = (Time,Time,a,a)
 
 animateOnOff : Float -> Easing.Easing -> Animation Bool a
-animateOnOff delay easing t (start,end,v) =
+animateOnOff delay easing t (start,end,_,v) = --TODO: use from
     let
         duration = end - start
         t' = case v of
@@ -68,20 +69,22 @@ animateOnOff delay easing t (start,end,v) =
     in
         \interp from to -> Easing.ease easing interp from to duration t'
 
-type alias AnimationState a = (Time,Time,a)
+animateIntTuple : Easing.Easing -> Time -> AnimationState (Int,Int) -> (Int,Int)
+animateIntTuple easing t (start,end,from,to) =
+    Easing.ease easing (Easing.pair easeInt) from to (end-start) (t-start)
 
 startAnimation : Time -> Time -> a -> AnimationState a -> AnimationState a
-startAnimation duration t v (start0,end0,v0) =
-    if  | end0 < t -> (t,t+duration,v)
+startAnimation duration t v (start0,end0,v00,v0) =
+    if  | end0 < t -> (t,t+duration,v0,v)
         | otherwise -> 
             let t' = t-(end0-t)
-            in (t',t'+duration,v)
+            in (t',t'+duration,v0,v)
 
 animationState : a -> AnimationState a
-animationState a = (0, 1, a)
+animationState a = (0, 1, a, a)
 
 currentValue : AnimationState a -> a
-currentValue (_, _, a) = a
+currentValue (_, _, _, a) = a
 
 animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> Signal a -> Signal h
 animationSignal init step render signal =
