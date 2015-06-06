@@ -6,7 +6,7 @@ import Html exposing (Html)
 import Html.Attributes as Html
 import Html.Events as Html
 import Controls
-import Easing
+import Easing exposing (Easing, Interpolation)
 import Color
 import Time exposing (Time)
 import String
@@ -47,7 +47,7 @@ scale n = "scale(" ++ (toString n) ++ ")"
 -- --
 
 -- https://github.com/Dandandan/Easing/pull/8
-easeInt : Easing.Interpolation Int
+easeInt : Interpolation Int
 easeInt from to v =
     from + (round ((toFloat (to-from)) * v))
 
@@ -55,12 +55,12 @@ easeInt from to v =
 -- -- ANIMATION MODULE
 -- --
 
-type alias Ease a = Easing.Interpolation a -> a -> a -> a
-type alias Animation t a = Time -> AnimationState t -> Ease a
-type alias AnimationState a = (Time,Time,a,a)
+type alias Ease e = Interpolation e -> e -> e -> e
+type alias Animation t e = Time -> AnimationState t -> Ease e
+type alias AnimationState t = (Time,Time,Easing,t,t)
 
-animateOnOff : Easing.Easing -> Animation Bool a
-animateOnOff easing t (start,end,_,v) = --TODO: use from
+animateOnOff : Animation Bool a
+animateOnOff t (start,end,easing,_,v) = --TODO: use from
     let
         duration = end - start
         t' = case v of
@@ -70,28 +70,31 @@ animateOnOff easing t (start,end,_,v) = --TODO: use from
         \interp from to -> Easing.ease easing interp from to duration t'
 
 
-animateValue : Easing.Interpolation a -> Easing.Easing -> Time -> AnimationState a -> a
-animateValue interp easing t (start,end,from,to) =
+animateValue : Interpolation a -> Time -> AnimationState a -> a
+animateValue interp t (start,end,easing,from,to) =
     Easing.ease easing interp from to (end-start) (t-start)
 
-animateIntTuple : Easing.Easing -> Time -> AnimationState (Int,Int) -> (Int,Int)
+animateIntTuple : Time -> AnimationState (Int,Int) -> (Int,Int)
 animateIntTuple = animateValue (Easing.pair easeInt)
 
-startAnimation : Time -> Time -> a -> AnimationState a -> AnimationState a
-startAnimation duration t v (start0,end0,v00,v0) =
-    if  | end0 < t -> (t,t+duration,v0,v)
+startAnimation : Easing -> Time -> Time -> a -> AnimationState a -> AnimationState a
+startAnimation easing duration t v (start0,end0,easing0,v00,v0) =
+    if  | end0 < t -> (t,t+duration,easing,v0,v)
         | otherwise -> 
             let t' = t-(end0-t)
-            in (t',t'+duration,v0,v)
+            in (t',t'+duration,easing,v0,v)
 
 clearAnimation : a -> AnimationState a -> AnimationState a
-clearAnimation v _ = (0, 1, v, v)
+clearAnimation v (_,_,_,_,_) = (0, 1, Easing.linear, v, v)
 
 animationState : a -> AnimationState a
-animationState v = (0, 1, v, v)
+animationState v = (0, 1, Easing.linear, v, v)
+
+--currentValue : Time -> AnimationState a -> a
+--currentValue (_, _, _, _, a) = a
 
 currentTargetValue : AnimationState a -> a
-currentTargetValue (_, _, _, a) = a
+currentTargetValue (_, _, _, _, a) = a
 
 animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> Signal a -> Signal h
 animationSignal init step render signal =

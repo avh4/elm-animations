@@ -37,8 +37,8 @@ circle (x,y) f =
         Html.div [Html.style style] []
 render time model =
     let
-        ease = animateIntTuple Easing.easeInOutQuad time model.location
-        easeClick = animateValue Easing.float Easing.easeInQuad time model.click
+        ease = animateIntTuple time model.location
+        easeClick = animateValue Easing.float time model.click
     in
         Html.div [Html.style [("position", "relative")]]
             [ box (ease |> fst) (ease |> snd)
@@ -60,8 +60,8 @@ step (time,(x,y)) model =
         duration = sqrt (d*4000)
     in
     { model
-    | location <- startAnimation duration time (x,y) model.location
-    , click <- model.click |> clearAnimation 0.0 |> startAnimation 350 time 1.0
+    | location <- startAnimation Easing.easeInOutQuad duration time (x,y) model.location
+    , click <- model.click |> clearAnimation 0.0 |> startAnimation Easing.easeInQuad 350 time 1.0
     , clickLocation <- (x,y)
     }
 

@@ -25,7 +25,7 @@ box size color =
 
 render time model =
     let
-        ease = animateOnOff Easing.easeInOutQuad time model
+        ease = animateOnOff time model
     in
         Html.div []
             [ box (ease easeInt 250 40) (ease Easing.color Color.blue Color.red)
@@ -35,7 +35,7 @@ render time model =
 init = animationState True
 
 step (time,a) model = case (currentTargetValue model) of
-    True -> startAnimation Time.second time False model
-    False -> startAnimation Time.second time True model
+    True -> startAnimation Easing.easeInOutQuad 3000 time False model
+    False -> startAnimation Easing.easeInOutQuad 3000 time True model
 
 main = animationSignal init step render (Time.every 1000)

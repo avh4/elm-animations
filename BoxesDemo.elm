@@ -16,7 +16,7 @@ import Animation.Last exposing (..)
 
 box time model delay =
     let
-        ease = animateOnOff Easing.easeInOutQuad (time-delay) model
+        ease = animateOnOff (time-delay) model
         size = ease easeInt 100 200
     in
         [ Html.div
@@ -49,6 +49,6 @@ type alias Model = AnimationState Bool
 step : (Time,Action) -> Model -> Model
 step (time,action) model = case action of
     Init -> model
-    Animate value -> startAnimation Time.second time value model
+    Animate value -> startAnimation Easing.easeInOutQuad Time.second time value model
 
 main = animationSignal init step render tbox.signal
