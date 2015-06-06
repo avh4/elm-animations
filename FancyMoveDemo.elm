@@ -51,9 +51,16 @@ init =
     , clickLocation = (0,0)
     }
 
+distance (a,b) (x,y) = sqrt (toFloat <| (a-x)*(a-x) + (b-y)*(b-y))
+
 step (time,(x,y)) model =
+    let
+        lastLocation = currentTargetValue model.location
+        d = distance (x,y) lastLocation
+        duration = sqrt (d*4000)
+    in
     { model
-    | location <- startAnimation Time.second time (x,y) model.location
+    | location <- startAnimation duration time (x,y) model.location
     , click <- model.click |> clearAnimation 0.0 |> startAnimation 350 time 1.0
     , clickLocation <- (x,y)
     }

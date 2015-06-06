@@ -34,7 +34,7 @@ render time model =
 
 init = animationState True
 
-step (time,a) model = case (currentValue model) of
+step (time,a) model = case (currentTargetValue model) of
     True -> startAnimation Time.second time False model
     False -> startAnimation Time.second time True model
 

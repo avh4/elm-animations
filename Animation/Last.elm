@@ -90,8 +90,8 @@ clearAnimation v _ = (0, 1, v, v)
 animationState : a -> AnimationState a
 animationState v = (0, 1, v, v)
 
-currentValue : AnimationState a -> a
-currentValue (_, _, _, a) = a
+currentTargetValue : AnimationState a -> a
+currentTargetValue (_, _, _, a) = a
 
 animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> Signal a -> Signal h
 animationSignal init step render signal =
