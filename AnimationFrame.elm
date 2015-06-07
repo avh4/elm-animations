@@ -12,12 +12,12 @@ fire once per frame.
 
 
 import Native.AnimationFrame
-import Signal
-import Time
+import Signal exposing (Signal)
+import Time exposing (Time)
 
 {-| Allows you
 to do brief animations based on user input without major inefficiencies.
 The values in the resulting signal are the timestamps of the frames.
 -}
-frameWhen : (Time.Time -> m -> Bool) -> Signal.Signal m -> Signal.Signal Time.Time
+frameWhen : (Time -> m -> Bool) -> Signal m -> Signal Time
 frameWhen = Native.AnimationFrame.frameWhen
