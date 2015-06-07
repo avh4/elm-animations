@@ -85,16 +85,21 @@ currentValue t state =
     in
         List.foldr add state.current state.animations
 
-startAnimation : Easing -> Time -> Time -> s -> ComplexAnimationState t s -> ComplexAnimationState t s
-startAnimation easing duration t v state =
-    { state
-    | current <- v
-    , animations <- (t,t+duration,easing,state.diff state.current v) :: (List.filter (\(_,end,_,_) -> t <= end) state.animations)
-    }
+startAnimation : Easing -> Time -> Time -> Time -> s -> ComplexAnimationState t s -> ComplexAnimationState t s
+startAnimation easing duration delay now v state =
+    let
+        start = now + delay
+        end = start + duration
+        isActive (_,end',_,_) = now <= end'
+    in
+        { state
+        | current <- v
+        , animations <- (start,end,easing,state.diff state.current v) :: (List.filter isActive state.animations)
+        }
 
-startOnOffAnimation : Easing -> Time -> Time -> Bool -> AnimationState Float -> AnimationState Float
-startOnOffAnimation easing duration t v =
-    startAnimation easing duration t (if v then 1.0 else 0.0)
+startOnOffAnimation : Easing -> Time -> Time -> Time -> Bool -> AnimationState Float -> AnimationState Float
+startOnOffAnimation easing duration delay now v =
+    startAnimation easing duration delay now (if v then 1.0 else 0.0)
 
 clearAnimation : a -> ComplexAnimationState t a -> ComplexAnimationState t a
 clearAnimation v state =

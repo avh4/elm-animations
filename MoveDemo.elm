@@ -38,6 +38,6 @@ intPairAnimationState =
 init = intPairAnimationState (40,400)
 
 step (time,(x,y)) model =
-    startAnimation Easing.easeInOutQuad Time.second time (x,y) model
+    startAnimation Easing.easeInOutQuad Time.second 0 time (x,y) model
 
 main = animationSignal init step render (isActive) (Signal.sampleOn Mouse.clicks Mouse.position)

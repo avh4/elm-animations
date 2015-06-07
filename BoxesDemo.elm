@@ -56,7 +56,7 @@ step (time,action) model = case action of
         let
             anim = startOnOffAnimation Easing.easeInOutQuad Time.second
             delay i = abs (focus-i) |> toFloat |> (*) 100
-            start (i,m) = (i,anim (time + (delay i)) value m)
+            start (i,m) = (i,anim (delay i) time value m)
         in
             model |> List.map start
 

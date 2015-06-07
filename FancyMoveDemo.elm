@@ -68,8 +68,8 @@ step (time,(x,y)) model =
         duration = sqrt (d*4000)
     in
     { model
-    | location <- startAnimation Easing.easeInOutQuad duration time (x,y) model.location
-    , click <- model.click |> clearAnimation 0.0 |> startAnimation Easing.easeInQuad 350 time 1.0
+    | location <- startAnimation Easing.easeInOutQuad duration 0 time (x,y) model.location
+    , click <- model.click |> clearAnimation 0.0 |> startAnimation Easing.easeInQuad 350 0 time 1.0
     , clickLocation <- (x,y)
     }
 
