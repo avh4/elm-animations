@@ -38,4 +38,4 @@ step (time,a) model = case (currentOnOffTargetValue model) of
     True -> startOnOffAnimation Easing.easeInOutQuad 3000 time False model
     False -> startOnOffAnimation Easing.easeInOutQuad 3000 time True model
 
-main = animationSignal init step render (Time.every 1000)
+main = animationSignal init step render (isActive) (Time.every 1000)

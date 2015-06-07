@@ -65,4 +65,4 @@ step (time,(x,y)) model =
     , clickLocation <- (x,y)
     }
 
-main = animationSignal init step render (Signal.sampleOn Mouse.clicks Mouse.position)
+main = animationSignal init step render (\t m -> isActive t m.location || isActive t m.click) (Signal.sampleOn Mouse.clicks Mouse.position)

@@ -11,6 +11,7 @@ import Color
 import Time exposing (Time)
 import String
 import Debug
+import AnimationFrame
 
 -- --
 -- -- TYPED HTML MODULE
@@ -92,10 +93,13 @@ currentTargetValue (_, _, _, _, _, a) = a
 currentOnOffTargetValue : AnimationState Float -> Bool
 currentOnOffTargetValue (_, _, _, _, _, f) = f == 1.0
 
-animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> Signal a -> Signal h
-animationSignal init step render signal =
+isActive : Time -> AnimationState a -> Bool
+isActive t (start,end,_,_,_,_) = t <= end
+
+animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> (Time -> m -> Bool) -> Signal a -> Signal h
+animationSignal init step render activeAnimations signal =
     let
-        time = Time.fps 60 |> Time.timestamp |> Signal.map fst
         model = signal |> Time.timestamp |> Signal.foldp step init
+        time = AnimationFrame.frameWhen activeAnimations model
     in
         Signal.map2 render time model

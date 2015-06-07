@@ -60,4 +60,4 @@ step (time,action) model = case action of
         in
             model |> List.map start
 
-main = animationSignal init step render tbox.signal
+main = animationSignal init step render (\t -> List.any (snd >> isActive t)) tbox.signal
