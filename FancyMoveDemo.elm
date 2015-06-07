@@ -45,9 +45,17 @@ render time model =
             , circle model.clickLocation easeClick
             ]
 
+intPairAnimationState =
+    let
+        addPair (a,b) (x,y) = (a+x,b+y)
+        diffPair (a,b) (x,y) = (a-x,b-y)
+        zeroPair = (0,0)
+    in
+        animationState (Easing.pair easeInt) zeroPair addPair diffPair
+
 init = 
-    { location = animationState (Easing.pair easeInt) (40,400)
-    , click = animationState Easing.float 1.0
+    { location = intPairAnimationState (40,400)
+    , click = floatAnimationState 1.0
     , clickLocation = (0,0)
     }
 

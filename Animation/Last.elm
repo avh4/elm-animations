@@ -57,44 +57,77 @@ easeInt from to v =
 -- --
 
 type alias Ease e = Interpolation e -> e -> e -> e
-type alias AnimationState t = (Time,Time,Easing,Interpolation t,t,t)
+type alias ComplexAnimationState t s =
+    { animations: List (Time,Time,Easing,t)
+    , zero: t
+    , add: t -> s -> s
+    , diff: s -> s -> t
+    , current: s
+    , interp: Interpolation t
+    }
+type alias AnimationState a = ComplexAnimationState a a
 
 animateOnOff : Time -> AnimationState Float -> Ease e
 animateOnOff time state interp from to =
     currentValue time state |> interp from to
 
-currentValue : Time -> AnimationState a -> a
-currentValue t (start,end,easing,interp,from,to) =
-    if  | t < start -> from
-        | t > end -> to
-        | otherwise -> Easing.ease easing interp from to (end-start) (t-start)
+currentValue : Time -> ComplexAnimationState t s -> s
+currentValue t state =
+    let
+        to = state.zero
+        interp = state.interp
+        val (start,end,easing,from) =
+            if  | t < start -> from
+                | t > end -> to
+                | otherwise -> Easing.ease easing interp from to (end-start) (t-start)
+        add animation s =
+            state.add (val animation) s
+    in
+        List.foldr add state.current state.animations
 
-startAnimation : Easing -> Time -> Time -> a -> AnimationState a -> AnimationState a
-startAnimation easing duration t v ((start0,end0,easing0,interp,v00,v0) as m) =
-    if  | end0 < t -> (t,t+duration,easing,interp,v0,v)
-        | otherwise -> (t,t+duration,easing,interp,currentValue t m,v)
+startAnimation : Easing -> Time -> Time -> s -> ComplexAnimationState t s -> ComplexAnimationState t s
+startAnimation easing duration t v state =
+    { state
+    | current <- v
+    , animations <- (t,t+duration,easing,state.diff state.current v) :: (List.filter (\(_,end,_,_) -> t <= end) state.animations)
+    }
 
 startOnOffAnimation : Easing -> Time -> Time -> Bool -> AnimationState Float -> AnimationState Float
 startOnOffAnimation easing duration t v =
     startAnimation easing duration t (if v then 1.0 else 0.0)
 
-clearAnimation : a -> AnimationState a -> AnimationState a
-clearAnimation v (_,_,_,interp,_,_) = (0, 1, Easing.linear, interp, v, v)
+clearAnimation : a -> ComplexAnimationState t a -> ComplexAnimationState t a
+clearAnimation v state =
+    { state
+    | current <- v
+    , animations <- []
+    }
 
-animationState : Interpolation a -> a -> AnimationState a
-animationState interp v = (0, 1, Easing.linear, interp, v, v)
+animationState : Interpolation t -> t -> (t -> a -> a) -> (a -> a -> t) -> a -> ComplexAnimationState t a
+animationState interp zero add diff v =
+    { animations = []
+    , zero = zero
+    , add = add
+    , diff = diff
+    , current = v
+    , interp = interp
+    }
+
+floatAnimationState : Float -> AnimationState Float
+floatAnimationState v =
+    animationState Easing.float 0 (+) (-) v
 
 onOffAnimationState : Bool -> AnimationState Float
-onOffAnimationState v = animationState Easing.float (if v then 1.0 else 0.0)
+onOffAnimationState v = floatAnimationState (if v then 1.0 else 0.0)
 
-currentTargetValue : AnimationState a -> a
-currentTargetValue (_, _, _, _, _, a) = a
+currentTargetValue : ComplexAnimationState t a -> a
+currentTargetValue state = state.current
 
 currentOnOffTargetValue : AnimationState Float -> Bool
-currentOnOffTargetValue (_, _, _, _, _, f) = f == 1.0
+currentOnOffTargetValue = currentTargetValue >> (==) 1.0
 
-isActive : Time -> AnimationState a -> Bool
-isActive t (start,end,_,_,_,_) = t <= end
+isActive : Time -> ComplexAnimationState t a -> Bool
+isActive t state = List.any (\(_,end,_,_) -> t <= end) state.animations
 
 animationSignal : m -> ((Time,a) -> m -> m) -> (Time -> m -> h) -> (Time -> m -> Bool) -> Signal a -> Signal h
 animationSignal init step render activeAnimations signal =

@@ -27,7 +27,15 @@ render time model =
             [ box (ease |> fst) (ease |> snd)
             ]
 
-init = animationState (Easing.pair easeInt) (40,400)
+intPairAnimationState =
+    let
+        addPair (a,b) (x,y) = (a+x,b+y)
+        diffPair (a,b) (x,y) = (a-x,b-y)
+        zeroPair = (0,0)
+    in
+        animationState (Easing.pair easeInt) zeroPair addPair diffPair
+
+init = intPairAnimationState (40,400)
 
 step (time,(x,y)) model =
     startAnimation Easing.easeInOutQuad Time.second time (x,y) model

@@ -35,7 +35,7 @@ render time model =
 init = onOffAnimationState True
 
 step (time,a) model = case (currentOnOffTargetValue model) of
-    True -> startOnOffAnimation Easing.easeInOutQuad 3000 time False model
-    False -> startOnOffAnimation Easing.easeInOutQuad 3000 time True model
+    True -> startOnOffAnimation Easing.easeInOutQuad 700 time False model
+    False -> startOnOffAnimation Easing.easeInOutQuad 700 time True model
 
 main = animationSignal init step render (isActive) (Time.every 1000)
