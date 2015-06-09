@@ -26,7 +26,9 @@ toHexDigit i = case i of
     15 -> "f"
     _ -> toString i
 
-toHexString i = (toHexDigit ((i//16)%16)) ++ (toHexDigit (i % 16))
+toHexString i' =
+    let i = i' |> max 0 |> min 255
+    in (toHexDigit ((i//16)%16)) ++ (toHexDigit (i % 16))
 
 toHtmlColor c = 
     let 
