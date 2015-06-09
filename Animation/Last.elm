@@ -65,7 +65,7 @@ type alias Animator t s =
     , diff: s -> s -> t
     , interpolation: Interpolation t
     }
-type alias ComplexAnimationState t s =
+type alias ComplexAnimationState t s = -- TODO: are there any reasonable use cases where t and s are different?
     { animations: List (Time,Time,Easing,t)
     , current: s
     , animator: Animator t s
@@ -114,7 +114,6 @@ clearAnimation v state =
     }
 
 animationState : Animator t s -> s -> ComplexAnimationState t s
---animationState : Interpolation t -> t -> (t -> a -> a) -> (a -> a -> t) -> a -> ComplexAnimationState t a
 animationState animator initialValue =
     { animations = []
     , current = initialValue
