@@ -24,3 +24,4 @@ mmake FlipDemo
 mmake BoxesDemo
 mmake MoveDemo
 mmake FancyMoveDemo
+mmake ButtonDemo
