@@ -70,7 +70,7 @@ render address time m =
         hf a b = Easing.float a b (hover)
         style =
             [ background color
-            , height (48-8-8) px
+            , TypedStyles.height (48-8-8) px
             , lineHeight (48-8-8) px
             , minWidth 64 px
             , ("color", "white")
