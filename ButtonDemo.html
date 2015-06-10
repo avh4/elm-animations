@@ -5080,11 +5080,40 @@ Elm.MaterialDesign.Button.make = function (_elm) {
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $Html$Events = Elm.Html.Events.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm),
    $Time = Elm.Time.make(_elm),
    $TypedStyles = Elm.TypedStyles.make(_elm);
+   var decodeClickLocation = A3($Json$Decode.object2,
+   F2(function (v0,v1) {
+      return {ctor: "_Tuple2"
+             ,_0: v0
+             ,_1: v1};
+   }),
+   A3($Json$Decode.object2,
+   F2(function (x,y) {
+      return x - y;
+   }),
+   A2($Json$Decode.at,
+   _L.fromArray(["pageX"]),
+   $Json$Decode.$int),
+   A2($Json$Decode.at,
+   _L.fromArray(["target"
+                ,"offsetLeft"]),
+   $Json$Decode.$int)),
+   A3($Json$Decode.object2,
+   F2(function (x,y) {
+      return x - y;
+   }),
+   A2($Json$Decode.at,
+   _L.fromArray(["pageY"]),
+   $Json$Decode.$int),
+   A2($Json$Decode.at,
+   _L.fromArray(["target"
+                ,"offsetTop"]),
+   $Json$Decode.$int)));
    var lighten = F2(function (color,
    pct) {
       return function () {
@@ -5158,10 +5187,10 @@ Elm.MaterialDesign.Button.make = function (_elm) {
                                        _v0._1._0)(m.hover)]],
                       m);}
                  _U.badCase($moduleName,
-                 "between lines 38 and 47");
+                 "between lines 39 and 48");
               }();}
          _U.badCase($moduleName,
-         "between lines 38 and 47");
+         "between lines 39 and 48");
       }();
    });
    var isActive = F2(function (t,
@@ -5352,9 +5381,12 @@ Elm.MaterialDesign.Button.make = function (_elm) {
          _L.fromArray([$Html$Attributes.style(style)
                       ,$Html$Events.onMouseEnter(address)(Hover(true))
                       ,$Html$Events.onMouseLeave(address)(Hover(false))
-                      ,$Html$Events.onClick(address)(Click({ctor: "_Tuple2"
-                                                           ,_0: 50
-                                                           ,_1: 20}))]),
+                      ,A3($Html$Events.on,
+                      "click",
+                      decodeClickLocation,
+                      function ($) {
+                         return $Signal.message(address)(Click($));
+                      })]),
          _L.fromArray([$Html.text(m.title)
                       ,A2($Html.div,
                       _L.fromArray([$Html$Attributes.style(rippleStyle)]),
@@ -5383,7 +5415,8 @@ Elm.MaterialDesign.Button.make = function (_elm) {
                                        ,boxShadow: boxShadow
                                        ,boxShadows: boxShadows
                                        ,lighten: lighten
-                                       ,render: render};
+                                       ,render: render
+                                       ,decodeClickLocation: decodeClickLocation};
    return _elm.MaterialDesign.Button.values;
 };
 Elm.Maybe = Elm.Maybe || {};
