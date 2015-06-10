@@ -1195,28 +1195,35 @@ Elm.Controls.make = function (_elm) {
    max,
    step,
    $default,
-   action) {
-      return A2($Html.label,
-      _L.fromArray([]),
-      _L.fromArray([$Html.text(name)
-                   ,A2($Html.input,
-                   _L.fromArray([$Html$Attributes.type$("range")
-                                ,$Html$Attributes.min($Basics.toString(min))
-                                ,$Html$Attributes.max($Basics.toString(max))
-                                ,$Html$Attributes.step($Basics.toString(step))
-                                ,$Html$Attributes.attribute("value")($Basics.toString($default))
-                                ,A3($Html$Events.on,
-                                "input",
-                                $Html$Events.targetValue,
-                                action)]),
-                   _L.fromArray([]))]));
+   parse) {
+      return function () {
+         var mbox = $Signal.mailbox($default);
+         var html = A2($Html.label,
+         _L.fromArray([]),
+         _L.fromArray([$Html.text(name)
+                      ,A2($Html.input,
+                      _L.fromArray([$Html$Attributes.type$("range")
+                                   ,$Html$Attributes.min($Basics.toString(min))
+                                   ,$Html$Attributes.max($Basics.toString(max))
+                                   ,$Html$Attributes.step($Basics.toString(step))
+                                   ,$Html$Attributes.attribute("value")($Basics.toString($default))
+                                   ,A3($Html$Events.on,
+                                   "input",
+                                   $Html$Events.targetValue,
+                                   function ($) {
+                                      return $Signal.message(mbox.address)(parse($));
+                                   })]),
+                      _L.fromArray([]))]));
+         return {_: {}
+                ,html: html
+                ,signal: mbox.signal};
+      }();
    });
-   var intSlider = F6(function (name,
+   var intSlider = F5(function (name,
    min,
    max,
    step,
-   $default,
-   mbox) {
+   $default) {
       return A6(slider,
       name,
       min,
@@ -1224,15 +1231,14 @@ Elm.Controls.make = function (_elm) {
       step,
       $default,
       function ($) {
-         return $Signal.message(mbox.address)($Maybe.withDefault($default)($Result.toMaybe($String.toInt($))));
+         return $Maybe.withDefault($default)($Result.toMaybe($String.toInt($)));
       });
    });
-   var floatSlider = F6(function (name,
+   var floatSlider = F5(function (name,
    min,
    max,
    step,
-   $default,
-   mbox) {
+   $default) {
       return A6(slider,
       name,
       min,
@@ -1240,45 +1246,19 @@ Elm.Controls.make = function (_elm) {
       step,
       $default,
       function ($) {
-         return $Signal.message(mbox.address)($Maybe.withDefault($default)($Result.toMaybe($String.toFloat($))));
+         return $Maybe.withDefault($default)($Result.toMaybe($String.toFloat($)));
       });
    });
-   var maybeIntSlider = F5(function (name,
-   min,
-   max,
-   step,
-   mbox) {
-      return A6(slider,
-      name,
-      min,
-      max,
-      step,
-      max,
-      function ($) {
-         return $Signal.message(mbox.address)($Result.toMaybe($String.toInt($)));
-      });
-   });
-   var maybeFloatSlider = F5(function (name,
-   min,
-   max,
-   step,
-   mbox) {
-      return A6(slider,
-      name,
-      min,
-      max,
-      step,
-      max,
-      function ($) {
-         return $Signal.message(mbox.address)($Result.toMaybe($String.toFloat($)));
-      });
+   var Slider = F2(function (a,b) {
+      return {_: {}
+             ,html: a
+             ,signal: b};
    });
    _elm.Controls.values = {_op: _op
+                          ,Slider: Slider
                           ,slider: slider
                           ,intSlider: intSlider
-                          ,floatSlider: floatSlider
-                          ,maybeIntSlider: maybeIntSlider
-                          ,maybeFloatSlider: maybeFloatSlider};
+                          ,floatSlider: floatSlider};
    return _elm.Controls.values;
 };
 Elm.Debug = Elm.Debug || {};

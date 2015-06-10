@@ -4937,184 +4937,454 @@ Elm.Main.make = function (_elm) {
    $Animation$Last = Elm.Animation.Last.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
-   $Easing = Elm.Easing.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
-   $Mouse = Elm.Mouse.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var distance = F2(function (_v0,
-   _v1) {
+   $MaterialDesign$Button = Elm.MaterialDesign.Button.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Time = Elm.Time.make(_elm);
+   var isActive = F2(function (t,
+   m) {
+      return A2($MaterialDesign$Button.isActive,
+      t,
+      m.a) || A2($MaterialDesign$Button.isActive,
+      t,
+      m.b);
+   });
+   var ButtonB = function (a) {
+      return {ctor: "ButtonB"
+             ,_0: a};
+   };
+   var ButtonA = function (a) {
+      return {ctor: "ButtonA"
+             ,_0: a};
+   };
+   var Y = function (a) {
+      return {ctor: "Y",_0: a};
+   };
+   var X = function (a) {
+      return {ctor: "X",_0: a};
+   };
+   var Click = function (a) {
+      return {ctor: "Click",_0: a};
+   };
+   var Hover = function (a) {
+      return {ctor: "Hover",_0: a};
+   };
+   var step = F2(function (_v0,m) {
       return function () {
-         switch (_v1.ctor)
+         switch (_v0.ctor)
          {case "_Tuple2":
             return function () {
-                 switch (_v0.ctor)
-                 {case "_Tuple2":
-                    return $Basics.sqrt($Basics.toFloat((_v0._0 - _v1._0) * (_v0._0 - _v1._0) + (_v0._1 - _v1._1) * (_v0._1 - _v1._1)));}
+                 switch (_v0._1.ctor)
+                 {case "ButtonA":
+                    return _U.replace([["a"
+                                       ,A2($MaterialDesign$Button.step,
+                                       {ctor: "_Tuple2"
+                                       ,_0: _v0._0
+                                       ,_1: _v0._1._0},
+                                       m.a)]],
+                      m);
+                    case "ButtonB":
+                    return _U.replace([["b"
+                                       ,A2($MaterialDesign$Button.step,
+                                       {ctor: "_Tuple2"
+                                       ,_0: _v0._0
+                                       ,_1: _v0._1._0},
+                                       m.b)]],
+                      m);}
                  _U.badCase($moduleName,
-                 "on line 54, column 24 to 65");
+                 "between lines 39 and 48");
               }();}
          _U.badCase($moduleName,
-         "on line 54, column 24 to 65");
-      }();
-   });
-   var step = F2(function (_v8,
-   model) {
-      return function () {
-         switch (_v8.ctor)
-         {case "_Tuple2":
-            switch (_v8._1.ctor)
-              {case "_Tuple2":
-                 return function () {
-                      var lastLocation = $Animation$Last.currentTargetValue(model.location);
-                      var d = A2(distance,
-                      {ctor: "_Tuple2"
-                      ,_0: _v8._1._0
-                      ,_1: _v8._1._1},
-                      lastLocation);
-                      var duration = $Basics.sqrt(d * 4000);
-                      return _U.replace([["location"
-                                         ,A6($Animation$Last.startAnimation,
-                                         $Easing.easeInOutQuad,
-                                         duration,
-                                         0,
-                                         _v8._0,
-                                         {ctor: "_Tuple2"
-                                         ,_0: _v8._1._0
-                                         ,_1: _v8._1._1},
-                                         model.location)]
-                                        ,["click"
-                                         ,A5($Animation$Last.startAnimation,
-                                         $Easing.easeInQuad,
-                                         350,
-                                         0,
-                                         _v8._0,
-                                         1.0)($Animation$Last.clearAnimation(0.0)(model.click))]
-                                        ,["clickLocation"
-                                         ,{ctor: "_Tuple2"
-                                          ,_0: _v8._1._0
-                                          ,_1: _v8._1._1}]],
-                      model);
-                   }();}
-              break;}
-         _U.badCase($moduleName,
-         "between lines 57 and 66");
+         "between lines 39 and 48");
       }();
    });
    var init = {_: {}
-              ,click: A2($Animation$Last.animationState,
-              $Animation$Last.$float,
-              1.0)
-              ,clickLocation: {ctor: "_Tuple2"
-                              ,_0: 0
-                              ,_1: 0}
-              ,location: A2($Animation$Last.animationState,
-              $Animation$Last.pair($Animation$Last.$int),
-              {ctor: "_Tuple2"
-              ,_0: 40
-              ,_1: 400})};
-   var circle = F2(function (_v14,
-   f) {
-      return function () {
-         switch (_v14.ctor)
-         {case "_Tuple2":
-            return function () {
-                 var h = $Basics.round(300 * f);
-                 var w = $Basics.round(300 * f);
-                 var style = _L.fromArray([{ctor: "_Tuple2"
-                                           ,_0: "position"
-                                           ,_1: "absolute"}
-                                          ,$Animation$Last.background($Color.blue)
-                                          ,{ctor: "_Tuple2"
-                                           ,_0: "opacity"
-                                           ,_1: $Basics.toString(1 - f)}
-                                          ,$Animation$Last.width(w)
-                                          ,$Animation$Last.height(h)
-                                          ,{ctor: "_Tuple2"
-                                           ,_0: "margin-left"
-                                           ,_1: A2($Basics._op["++"],
-                                           $Basics.toString(_v14._0 - (w / 2 | 0)),
-                                           "px")}
-                                          ,{ctor: "_Tuple2"
-                                           ,_0: "margin-top"
-                                           ,_1: A2($Basics._op["++"],
-                                           $Basics.toString(_v14._1 - (h / 2 | 0)),
-                                           "px")}]);
-                 return A2($Html.div,
-                 _L.fromArray([$Html$Attributes.style(style)]),
-                 _L.fromArray([]));
-              }();}
-         _U.badCase($moduleName,
-         "between lines 24 and 37");
-      }();
+              ,a: A2($MaterialDesign$Button.init,
+              $Color.orange,
+              "Agree")
+              ,b: A2($MaterialDesign$Button.init,
+              $Color.purple,
+              "Cancel")};
+   var Model = F2(function (a,b) {
+      return {_: {},a: a,b: b};
    });
-   var box = F2(function (x,y) {
-      return function () {
-         var style = _L.fromArray([{ctor: "_Tuple2"
-                                   ,_0: "position"
-                                   ,_1: "absolute"}
-                                  ,$Animation$Last.background($Color.charcoal)
-                                  ,$Animation$Last.width(10)
-                                  ,$Animation$Last.height(10)
-                                  ,{ctor: "_Tuple2"
-                                   ,_0: "margin-left"
-                                   ,_1: A2($Basics._op["++"],
-                                   $Basics.toString(x - 5),
-                                   "px")}
-                                  ,{ctor: "_Tuple2"
-                                   ,_0: "margin-top"
-                                   ,_1: A2($Basics._op["++"],
-                                   $Basics.toString(y - 5),
-                                   "px")}]);
-         return A2($Html.div,
-         _L.fromArray([$Html$Attributes.style(style)]),
-         _L.fromArray([]));
-      }();
-   });
+   var buttonB = $Signal.mailbox($MaterialDesign$Button.Hover(false));
+   var buttonA = $Signal.mailbox($MaterialDesign$Button.Hover(false));
    var render = F2(function (time,
    model) {
-      return function () {
-         var easeClick = A2($Animation$Last.currentValue,
-         time,
-         model.click);
-         var ease = A2($Animation$Last.currentValue,
-         time,
-         model.location);
-         return A2($Html.div,
-         _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                            ,_0: "position"
-                                                            ,_1: "relative"}]))]),
-         _L.fromArray([A2(box,
-                      $Basics.fst(ease),
-                      $Basics.snd(ease))
-                      ,A2(circle,
-                      model.clickLocation,
-                      easeClick)]));
-      }();
+      return A2($Html.div,
+      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                         ,_0: "padding"
+                                                         ,_1: "8px"}]))]),
+      _L.fromArray([A2($Html.p,
+                   _L.fromArray([]),
+                   _L.fromArray([A3($MaterialDesign$Button.render,
+                   buttonA.address,
+                   time,
+                   model.a)]))
+                   ,A2($Html.p,
+                   _L.fromArray([]),
+                   _L.fromArray([A3($MaterialDesign$Button.render,
+                   buttonB.address,
+                   time,
+                   model.b)]))]));
    });
+   var actions = $Signal.mergeMany(_L.fromArray([A2($Signal.map,
+                                                ButtonA,
+                                                buttonA.signal)
+                                                ,A2($Signal.map,
+                                                ButtonB,
+                                                buttonB.signal)]));
    var main = A5($Animation$Last.animationSignal,
    init,
    step,
    render,
-   F2(function (t,m) {
-      return A2($Animation$Last.isActive,
-      t,
-      m.location) || A2($Animation$Last.isActive,
-      t,
-      m.click);
-   }),
-   A2($Signal.sampleOn,
-   $Mouse.clicks,
-   $Mouse.position));
+   isActive,
+   actions);
    _elm.Main.values = {_op: _op
-                      ,box: box
-                      ,circle: circle
+                      ,buttonA: buttonA
+                      ,buttonB: buttonB
                       ,render: render
+                      ,Model: Model
                       ,init: init
-                      ,distance: distance
                       ,step: step
+                      ,Hover: Hover
+                      ,Click: Click
+                      ,X: X
+                      ,Y: Y
+                      ,ButtonA: ButtonA
+                      ,ButtonB: ButtonB
+                      ,actions: actions
+                      ,isActive: isActive
                       ,main: main};
    return _elm.Main.values;
+};
+Elm.MaterialDesign = Elm.MaterialDesign || {};
+Elm.MaterialDesign.Button = Elm.MaterialDesign.Button || {};
+Elm.MaterialDesign.Button.make = function (_elm) {
+   "use strict";
+   _elm.MaterialDesign = _elm.MaterialDesign || {};
+   _elm.MaterialDesign.Button = _elm.MaterialDesign.Button || {};
+   if (_elm.MaterialDesign.Button.values)
+   return _elm.MaterialDesign.Button.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "MaterialDesign.Button",
+   $Animation$Last = Elm.Animation.Last.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $Easing = Elm.Easing.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Time = Elm.Time.make(_elm),
+   $TypedStyles = Elm.TypedStyles.make(_elm);
+   var lighten = F2(function (color,
+   pct) {
+      return function () {
+         var c = $Color.toHsl(color);
+         return A4($Color.hsla,
+         c.hue,
+         c.saturation,
+         c.lightness + pct,
+         c.alpha);
+      }();
+   });
+   var boxShadows = function (list) {
+      return {ctor: "_Tuple2"
+             ,_0: "box-shadow"
+             ,_1: $String.join(",")($List.map($Basics.snd)(list))};
+   };
+   var boxShadow = F5(function (hShadow,
+   vShadow,
+   blur,
+   spread,
+   color) {
+      return {ctor: "_Tuple2"
+             ,_0: "box-shadow"
+             ,_1: A2($Basics._op["++"],
+             $Basics.toString(hShadow),
+             A2($Basics._op["++"],
+             "px ",
+             A2($Basics._op["++"],
+             $Basics.toString(vShadow),
+             A2($Basics._op["++"],
+             "px ",
+             A2($Basics._op["++"],
+             $Basics.toString(blur),
+             A2($Basics._op["++"],
+             "px ",
+             A2($Basics._op["++"],
+             $Basics.toString(spread),
+             A2($Basics._op["++"],
+             "px ",
+             $TypedStyles.cssColor(color)))))))))};
+   });
+   var step = F2(function (_v0,m) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return function () {
+                 switch (_v0._1.ctor)
+                 {case "Click":
+                    switch (_v0._1._0.ctor)
+                      {case "_Tuple2":
+                         return _U.replace([["clickLocation"
+                                            ,{ctor: "_Tuple2"
+                                             ,_0: _v0._1._0._0
+                                             ,_1: _v0._1._0._1}]
+                                           ,["click"
+                                            ,A5($Animation$Last.startOnOffAnimation,
+                                            $Easing.linear,
+                                            500,
+                                            0,
+                                            _v0._0,
+                                            true)($Animation$Last.clearAnimation(0.0)(m.click))]],
+                           m);}
+                      break;
+                    case "Hover":
+                    return _U.replace([["hover"
+                                       ,A5($Animation$Last.startOnOffAnimation,
+                                       $Easing.linear,
+                                       250,
+                                       0,
+                                       _v0._0,
+                                       _v0._1._0)(m.hover)]],
+                      m);}
+                 _U.badCase($moduleName,
+                 "between lines 38 and 47");
+              }();}
+         _U.badCase($moduleName,
+         "between lines 38 and 47");
+      }();
+   });
+   var isActive = F2(function (t,
+   m) {
+      return A2($Animation$Last.isActive,
+      t,
+      m.hover) || A2($Animation$Last.isActive,
+      t,
+      m.click);
+   });
+   var init = F2(function (color,
+   title) {
+      return {_: {}
+             ,click: $Animation$Last.onOffAnimationState(false)
+             ,clickLocation: {ctor: "_Tuple2"
+                             ,_0: 0
+                             ,_1: 0}
+             ,color: color
+             ,hover: $Animation$Last.onOffAnimationState(false)
+             ,title: title};
+   });
+   var Hover = function (a) {
+      return {ctor: "Hover",_0: a};
+   };
+   var Click = function (a) {
+      return {ctor: "Click",_0: a};
+   };
+   var render = F3(function (address,
+   time,
+   m) {
+      return function () {
+         var color0 = m.color;
+         var $ = m.clickLocation,
+         x = $._0,
+         y = $._1;
+         var click = A2($Animation$Last.currentValue,
+         time,
+         m.click);
+         var rippleStyle = _L.fromArray([{ctor: "_Tuple2"
+                                         ,_0: "background"
+                                         ,_1: "rgba(255, 255, 255, 0.45)"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "position"
+                                         ,_1: "absolute"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "border-radius"
+                                         ,_1: "50%"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "width"
+                                         ,_1: "20px"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "height"
+                                         ,_1: "20px"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "margin-top"
+                                         ,_1: "-10px"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "margin-left"
+                                         ,_1: "-10px"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "opacity"
+                                         ,_1: $Basics.toString(A3($Easing.$float,
+                                         0,
+                                         1,
+                                         F2(function (x,y) {
+                                            return x - y;
+                                         })(1)(F2(function (x,y) {
+                                            return x * y;
+                                         })(2)($Basics.abs(click - 0.5)))))}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "pointer-events"
+                                         ,_1: "none"}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "top"
+                                         ,_1: A2($Basics._op["++"],
+                                         $Basics.toString(y),
+                                         "px")}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "left"
+                                         ,_1: A2($Basics._op["++"],
+                                         $Basics.toString(x),
+                                         "px")}
+                                        ,{ctor: "_Tuple2"
+                                         ,_0: "transform"
+                                         ,_1: A2($Basics._op["++"],
+                                         "scale(",
+                                         A2($Basics._op["++"],
+                                         $Basics.toString(A3($Easing.$float,
+                                         1,
+                                         10,
+                                         click * 2)),
+                                         ")"))}]);
+         var hover = A2($Animation$Last.currentValue,
+         time,
+         m.hover);
+         var color = A3($Easing.color,
+         color0,
+         A2(lighten,color0,5.0e-2),
+         hover);
+         var hf = F2(function (a,b) {
+            return A3($Easing.$float,
+            a,
+            b,
+            hover);
+         });
+         var style = _L.fromArray([$Animation$Last.background(color)
+                                  ,A2($TypedStyles.height,
+                                  48 - 8 - 8,
+                                  $TypedStyles.px)
+                                  ,A2($TypedStyles.lineHeight,
+                                  48 - 8 - 8,
+                                  $TypedStyles.px)
+                                  ,A2($TypedStyles.minWidth,
+                                  64,
+                                  $TypedStyles.px)
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "color"
+                                   ,_1: "white"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "border"
+                                   ,_1: "none"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "border-radius"
+                                   ,_1: "2px"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "outline"
+                                   ,_1: "0"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "padding"
+                                   ,_1: "0 2rem"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "text-transform"
+                                   ,_1: "uppercase"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "vertical-align"
+                                   ,_1: "middle"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "-webkit-tap-highlight-color"
+                                   ,_1: "transparent"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "display"
+                                   ,_1: "inline-block"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "letter-spacing"
+                                   ,_1: "0.5px"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "cursor"
+                                   ,_1: "pointer"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "text-decoration"
+                                   ,_1: "none"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "text-align"
+                                   ,_1: "center"}
+                                  ,boxShadows(_L.fromArray([A5(boxShadow,
+                                                           0,
+                                                           A2(hf,2,5),
+                                                           A2(hf,5,11),
+                                                           0,
+                                                           A4($Color.rgba,
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           A2(hf,0.16,0.18)))
+                                                           ,A5(boxShadow,
+                                                           0,
+                                                           A2(hf,2,4),
+                                                           A2(hf,10,15),
+                                                           0,
+                                                           A4($Color.rgba,
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           A2(hf,0.12,0.15)))]))
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "overflow"
+                                   ,_1: "hidden"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "user-select"
+                                   ,_1: "none"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "-webkit-user-select"
+                                   ,_1: "none"}
+                                  ,{ctor: "_Tuple2"
+                                   ,_0: "will-change"
+                                   ,_1: "opacity,transform"}]);
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.style(style)
+                      ,$Html$Events.onMouseEnter(address)(Hover(true))
+                      ,$Html$Events.onMouseLeave(address)(Hover(false))
+                      ,$Html$Events.onClick(address)(Click({ctor: "_Tuple2"
+                                                           ,_0: 50
+                                                           ,_1: 20}))]),
+         _L.fromArray([$Html.text(m.title)
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.style(rippleStyle)]),
+                      _L.fromArray([]))]));
+      }();
+   });
+   var Model = F5(function (a,
+   b,
+   c,
+   d,
+   e) {
+      return {_: {}
+             ,click: b
+             ,clickLocation: c
+             ,color: d
+             ,hover: a
+             ,title: e};
+   });
+   _elm.MaterialDesign.Button.values = {_op: _op
+                                       ,Model: Model
+                                       ,Click: Click
+                                       ,Hover: Hover
+                                       ,init: init
+                                       ,isActive: isActive
+                                       ,step: step
+                                       ,boxShadow: boxShadow
+                                       ,boxShadows: boxShadows
+                                       ,lighten: lighten
+                                       ,render: render};
+   return _elm.MaterialDesign.Button.values;
 };
 Elm.Maybe = Elm.Maybe || {};
 Elm.Maybe.make = function (_elm) {
@@ -5188,37 +5458,6 @@ Elm.Maybe.make = function (_elm) {
                        ,Just: Just
                        ,Nothing: Nothing};
    return _elm.Maybe.values;
-};
-Elm.Mouse = Elm.Mouse || {};
-Elm.Mouse.make = function (_elm) {
-   "use strict";
-   _elm.Mouse = _elm.Mouse || {};
-   if (_elm.Mouse.values)
-   return _elm.Mouse.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Mouse",
-   $Basics = Elm.Basics.make(_elm),
-   $Native$Mouse = Elm.Native.Mouse.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var clicks = $Native$Mouse.clicks;
-   var isDown = $Native$Mouse.isDown;
-   var position = $Native$Mouse.position;
-   var x = A2($Signal.map,
-   $Basics.fst,
-   position);
-   var y = A2($Signal.map,
-   $Basics.snd,
-   position);
-   _elm.Mouse.values = {_op: _op
-                       ,position: position
-                       ,x: x
-                       ,y: y
-                       ,isDown: isDown
-                       ,clicks: clicks};
-   return _elm.Mouse.values;
 };
 Elm.Native.AnimationFrame = {};
 Elm.Native.AnimationFrame.make = function(localRuntime) {
@@ -8601,50 +8840,6 @@ Elm.Native.List.make = function(localRuntime) {
 	};
 	return localRuntime.Native.List.values = Elm.Native.List.values;
 
-};
-
-Elm.Native = Elm.Native || {};
-Elm.Native.Mouse = {};
-Elm.Native.Mouse.make = function(localRuntime) {
-
-	localRuntime.Native = localRuntime.Native || {};
-	localRuntime.Native.Mouse = localRuntime.Native.Mouse || {};
-	if (localRuntime.Native.Mouse.values)
-	{
-		return localRuntime.Native.Mouse.values;
-	}
-
-	var NS = Elm.Native.Signal.make(localRuntime);
-	var Utils = Elm.Native.Utils.make(localRuntime);
-
-	var position = NS.input('Mouse.position', Utils.Tuple2(0,0));
-
-	var isDown = NS.input('Mouse.isDown', false);
-
-	var clicks = NS.input('Mouse.clicks', Utils.Tuple0);
-
-	var node = localRuntime.isFullscreen()
-		? document
-		: localRuntime.node;
-
-	localRuntime.addListener([clicks.id], node, 'click', function click() {
-		localRuntime.notify(clicks.id, Utils.Tuple0);
-	});
-	localRuntime.addListener([isDown.id], node, 'mousedown', function down() {
-		localRuntime.notify(isDown.id, true);
-	});
-	localRuntime.addListener([isDown.id], node, 'mouseup', function up() {
-		localRuntime.notify(isDown.id, false);
-	});
-	localRuntime.addListener([position.id], node, 'mousemove', function move(e) {
-		localRuntime.notify(position.id, Utils.getXY(e));
-	});
-
-	return localRuntime.Native.Mouse.values = {
-		position: position,
-		isDown: isDown,
-		clicks: clicks
-	};
 };
 
 Elm.Native.Port = {};
@@ -16664,6 +16859,1028 @@ Elm.Transform2D.make = function (_elm) {
                              ,scaleX: scaleX
                              ,scaleY: scaleY};
    return _elm.Transform2D.values;
+};
+Elm.TypedStyles = Elm.TypedStyles || {};
+Elm.TypedStyles.make = function (_elm) {
+   "use strict";
+   _elm.TypedStyles = _elm.TypedStyles || {};
+   if (_elm.TypedStyles.values)
+   return _elm.TypedStyles.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "TypedStyles",
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm);
+   var opacity$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "opacity"
+             ,_1: $Basics.toString(x)
+             ,_2: $Basics.toString(y)};
+   });
+   var opacity = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "opacity"
+             ,_1: $Basics.toString(x)};
+   };
+   var textJustify = {ctor: "_Tuple2"
+                     ,_0: "text-align"
+                     ,_1: "justify"};
+   var textCenter = {ctor: "_Tuple2"
+                    ,_0: "text-align"
+                    ,_1: "center"};
+   var textRight = {ctor: "_Tuple2"
+                   ,_0: "text-align"
+                   ,_1: "right"};
+   var textLeft = {ctor: "_Tuple2"
+                  ,_0: "text-align"
+                  ,_1: "left"};
+   var cssColor = function (c) {
+      return function () {
+         var x = $Color.toRgb(c);
+         return A2($Basics._op["++"],
+         "rgba(",
+         A2($Basics._op["++"],
+         $Basics.toString(x.red),
+         A2($Basics._op["++"],
+         ",",
+         A2($Basics._op["++"],
+         $Basics.toString(x.green),
+         A2($Basics._op["++"],
+         ",",
+         A2($Basics._op["++"],
+         $Basics.toString(x.blue),
+         A2($Basics._op["++"],
+         ",",
+         A2($Basics._op["++"],
+         $Basics.toString(x.alpha),
+         ")"))))))));
+      }();
+   };
+   var borderStyleSerializer = function (x) {
+      return function () {
+         switch (x.ctor)
+         {case "Dashed": return "Dashed";
+            case "Dotted": return "Dotted";
+            case "Double": return "Double";
+            case "Groove": return "Groove";
+            case "Inset": return "Inset";
+            case "Outset": return "Outset";
+            case "Ridge": return "Ridge";
+            case "Solid": return "Solid";}
+         _U.badCase($moduleName,
+         "between lines 720 and 731");
+      }();
+   };
+   var Outset = {ctor: "Outset"};
+   var Inset = {ctor: "Inset"};
+   var Ridge = {ctor: "Ridge"};
+   var Groove = {ctor: "Groove"};
+   var Double = {ctor: "Double"};
+   var Dashed = {ctor: "Dashed"};
+   var Dotted = {ctor: "Dotted"};
+   var Solid = {ctor: "Solid"};
+   var outlineColor$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "outline-color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var outlineColor = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "outline-color"
+             ,_1: cssColor(x)};
+   };
+   var borderBottomColor$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-bottom-color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var borderBottomColor = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-bottom-color"
+             ,_1: cssColor(x)};
+   };
+   var borderTopColor$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-top-color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var borderTopColor = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-top-color"
+             ,_1: cssColor(x)};
+   };
+   var borderRightColor$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-right-color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var borderRightColor = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-right-color"
+             ,_1: cssColor(x)};
+   };
+   var borderLeftColor$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-left-color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var borderLeftColor = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-left-color"
+             ,_1: cssColor(x)};
+   };
+   var borderColor$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var borderColor = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-color"
+             ,_1: cssColor(x)};
+   };
+   var backgroundColor$ = F2(function (x,
+   y) {
+      return {ctor: "_Tuple3"
+             ,_0: "background-color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var backgroundColor = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "background-color"
+             ,_1: cssColor(x)};
+   };
+   var color$ = F2(function (x,y) {
+      return {ctor: "_Tuple3"
+             ,_0: "color"
+             ,_1: cssColor(x)
+             ,_2: cssColor(y)};
+   });
+   var color = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "color"
+             ,_1: cssColor(x)};
+   };
+   var serializeLength = function (x) {
+      return function () {
+         switch (x.ctor)
+         {case "InCentimeters":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "cm");
+            case "InChs":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "ch");
+            case "InEms":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "em");
+            case "InExs":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "ex");
+            case "InInchs":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "in");
+            case "InMillimeters":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "mm");
+            case "InPercents":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "%");
+            case "InPicas":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "pc");
+            case "InPixels":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "px");
+            case "InPoints":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "pt");
+            case "InRems":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "rem");
+            case "InVhs":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "vh");
+            case "InVmins":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "vmax");
+            case "InVws":
+            return A2($Basics._op["++"],
+              $Basics.toString(x._0),
+              "vw");}
+         _U.badCase($moduleName,
+         "between lines 150 and 168");
+      }();
+   };
+   var padding = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "padding"
+             ,_1: serializeLength(f(x))};
+   });
+   var padding$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "padding"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var paddingTop = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "padding-top"
+             ,_1: serializeLength(f(x))};
+   });
+   var paddingTop$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "padding-top"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var paddingBottom = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "padding-bottom"
+             ,_1: serializeLength(f(x))};
+   });
+   var paddingBottom$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "padding-bottom"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var paddingLeft = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "padding-left"
+             ,_1: serializeLength(f(x))};
+   });
+   var paddingLeft$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "padding-left"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var paddingRight = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "padding-right"
+             ,_1: serializeLength(f(x))};
+   });
+   var paddingRight$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "padding-right"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var margin = F2(function (x,f) {
+      return {ctor: "_Tuple2"
+             ,_0: "margin"
+             ,_1: serializeLength(f(x))};
+   });
+   var margin$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "margin"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var marginTop = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "margin-top"
+             ,_1: serializeLength(f(x))};
+   });
+   var marginTop$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "margin-top"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var marginBottom = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "margin-bottom"
+             ,_1: serializeLength(f(x))};
+   });
+   var marginBottom$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "margin-bottom"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var marginLeft = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "margin-left"
+             ,_1: serializeLength(f(x))};
+   });
+   var marginLeft$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "margin-left"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var marginRight = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "margin-right"
+             ,_1: serializeLength(f(x))};
+   });
+   var marginRight$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "margin-right"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var fontSize = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "font-size"
+             ,_1: serializeLength(f(x))};
+   });
+   var fontSize$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "font-size"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var height = F2(function (x,f) {
+      return {ctor: "_Tuple2"
+             ,_0: "height"
+             ,_1: serializeLength(f(x))};
+   });
+   var height$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "height"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var minHeight = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "min-height"
+             ,_1: serializeLength(f(x))};
+   });
+   var minHeight$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "min-height"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var maxHeight = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "max-height"
+             ,_1: serializeLength(f(x))};
+   });
+   var maxHeight$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "max-height"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var width = F2(function (x,f) {
+      return {ctor: "_Tuple2"
+             ,_0: "width"
+             ,_1: serializeLength(f(x))};
+   });
+   var width$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "width"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var minWidth = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "min-width"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderTopWidth = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-top-width"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderTopWidth$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-top-width"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderBottomWidth = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-bottom-width"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderBottomWidth$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-bottom-width"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderLeftWidth = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-left-width"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderLeftWidth$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-left-width"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderRightWidth = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-right-width"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderRightWidth$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-right-width"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var letterSpacing = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "letter-spacing"
+             ,_1: serializeLength(f(x))};
+   });
+   var letterSpacing$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "letter-spacing"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var textIndent = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "text-indent"
+             ,_1: serializeLength(f(x))};
+   });
+   var textIndent$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "text-indent"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var wordSpacing = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "word-spacing"
+             ,_1: serializeLength(f(x))};
+   });
+   var wordSpacing$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "word-spacing"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderRadius = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-radius"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderRadius$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-radius"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderTopLeftRadius = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-top-left-radius"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderTopLeftRadius$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-top-left-radius"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderBottomLeftRadius = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-bottom-left-radius"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderBottomLeftRadius$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-bottom-left-radius"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderTopRightRadius = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-top-right-radius"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderTopRightRadius$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-top-right-radius"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderBottomRightRadius = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-bottom-right-radius"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderBottomRightRadius$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-bottom-right-radius"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var borderWidth = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-width"
+             ,_1: serializeLength(f(x))};
+   });
+   var borderWidth$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "border-width"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var bottom = F2(function (x,f) {
+      return {ctor: "_Tuple2"
+             ,_0: "bottom"
+             ,_1: serializeLength(f(x))};
+   });
+   var bottom$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "bottom"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var top = F2(function (x,f) {
+      return {ctor: "_Tuple2"
+             ,_0: "top"
+             ,_1: serializeLength(f(x))};
+   });
+   var top$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "top"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var left = F2(function (x,f) {
+      return {ctor: "_Tuple2"
+             ,_0: "left"
+             ,_1: serializeLength(f(x))};
+   });
+   var left$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "left"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var right = F2(function (x,f) {
+      return {ctor: "_Tuple2"
+             ,_0: "right"
+             ,_1: serializeLength(f(x))};
+   });
+   var right$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "right"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var lineHeight = F2(function (x,
+   f) {
+      return {ctor: "_Tuple2"
+             ,_0: "line-height"
+             ,_1: serializeLength(f(x))};
+   });
+   var lineHeight$ = F4(function (x,
+   f,
+   y,
+   g) {
+      return {ctor: "_Tuple3"
+             ,_0: "line-height"
+             ,_1: serializeLength(f(x))
+             ,_2: serializeLength(g(y))};
+   });
+   var InPercents = function (a) {
+      return {ctor: "InPercents"
+             ,_0: a};
+   };
+   var prc = function (i) {
+      return InPercents(i);
+   };
+   var InPicas = function (a) {
+      return {ctor: "InPicas"
+             ,_0: a};
+   };
+   var pica = function (i) {
+      return InPicas(i);
+   };
+   var InPoints = function (a) {
+      return {ctor: "InPoints"
+             ,_0: a};
+   };
+   var pt = function (i) {
+      return InPoints(i);
+   };
+   var InInchs = function (a) {
+      return {ctor: "InInchs"
+             ,_0: a};
+   };
+   var inches = function (i) {
+      return InInchs(i);
+   };
+   var InCentimeters = function (a) {
+      return {ctor: "InCentimeters"
+             ,_0: a};
+   };
+   var cm = function (i) {
+      return InCentimeters(i);
+   };
+   var InMillimeters = function (a) {
+      return {ctor: "InMillimeters"
+             ,_0: a};
+   };
+   var mm = function (i) {
+      return InMillimeters(i);
+   };
+   var InPixels = function (a) {
+      return {ctor: "InPixels"
+             ,_0: a};
+   };
+   var px = function (i) {
+      return InPixels(i);
+   };
+   var InVmins = function (a) {
+      return {ctor: "InVmins"
+             ,_0: a};
+   };
+   var vmax = function (i) {
+      return InVmins(i);
+   };
+   var InVws = function (a) {
+      return {ctor: "InVws",_0: a};
+   };
+   var vw = function (i) {
+      return InVws(i);
+   };
+   var InVhs = function (a) {
+      return {ctor: "InVhs",_0: a};
+   };
+   var vh = function (i) {
+      return InVhs(i);
+   };
+   var InRems = function (a) {
+      return {ctor: "InRems"
+             ,_0: a};
+   };
+   var rem = function (i) {
+      return InRems(i);
+   };
+   var InChs = function (a) {
+      return {ctor: "InChs",_0: a};
+   };
+   var ch = function (i) {
+      return InChs(i);
+   };
+   var InExs = function (a) {
+      return {ctor: "InExs",_0: a};
+   };
+   var ex = function (i) {
+      return InExs(i);
+   };
+   var InEms = function (a) {
+      return {ctor: "InEms",_0: a};
+   };
+   var em = function (i) {
+      return InEms(i);
+   };
+   var serializeCssOptionalValue = F2(function (x,
+   s) {
+      return function () {
+         switch (x.ctor)
+         {case "CssOptionalJust":
+            return s(x._0);
+            case "None": return "none";}
+         _U.badCase($moduleName,
+         "between lines 57 and 59");
+      }();
+   });
+   var borderStyle = function (x) {
+      return {ctor: "_Tuple2"
+             ,_0: "border-style"
+             ,_1: A2(serializeCssOptionalValue,
+             x,
+             borderStyleSerializer)};
+   };
+   var border = F4(function (w,
+   f,
+   s,
+   c) {
+      return {ctor: "_Tuple2"
+             ,_0: "border"
+             ,_1: A2($Basics._op["++"],
+             serializeLength(f(w)),
+             A2($Basics._op["++"],
+             " ",
+             A2($Basics._op["++"],
+             A2(serializeCssOptionalValue,
+             s,
+             borderStyleSerializer),
+             A2($Basics._op["++"],
+             " ",
+             cssColor(c)))))};
+   });
+   var None = {ctor: "None"};
+   var none = None;
+   var CssOptionalJust = function (a) {
+      return {ctor: "CssOptionalJust"
+             ,_0: a};
+   };
+   var solid = CssOptionalJust(Solid);
+   var dotted = CssOptionalJust(Dotted);
+   var dashed = CssOptionalJust(Dashed);
+   var $double = CssOptionalJust(Double);
+   var groove = CssOptionalJust(Groove);
+   var ridge = CssOptionalJust(Ridge);
+   var inset = CssOptionalJust(Inset);
+   var outset = CssOptionalJust(Outset);
+   _elm.TypedStyles.values = {_op: _op
+                             ,CssOptionalJust: CssOptionalJust
+                             ,None: None
+                             ,none: none
+                             ,serializeCssOptionalValue: serializeCssOptionalValue
+                             ,InEms: InEms
+                             ,InExs: InExs
+                             ,InChs: InChs
+                             ,InRems: InRems
+                             ,InVhs: InVhs
+                             ,InVws: InVws
+                             ,InVmins: InVmins
+                             ,InPixels: InPixels
+                             ,InMillimeters: InMillimeters
+                             ,InCentimeters: InCentimeters
+                             ,InInchs: InInchs
+                             ,InPoints: InPoints
+                             ,InPicas: InPicas
+                             ,InPercents: InPercents
+                             ,em: em
+                             ,ex: ex
+                             ,ch: ch
+                             ,rem: rem
+                             ,vh: vh
+                             ,vw: vw
+                             ,vmax: vmax
+                             ,px: px
+                             ,mm: mm
+                             ,cm: cm
+                             ,inches: inches
+                             ,pt: pt
+                             ,pica: pica
+                             ,prc: prc
+                             ,serializeLength: serializeLength
+                             ,padding: padding
+                             ,padding$: padding$
+                             ,paddingTop: paddingTop
+                             ,paddingTop$: paddingTop$
+                             ,paddingBottom: paddingBottom
+                             ,paddingBottom$: paddingBottom$
+                             ,paddingLeft: paddingLeft
+                             ,paddingLeft$: paddingLeft$
+                             ,paddingRight: paddingRight
+                             ,paddingRight$: paddingRight$
+                             ,margin: margin
+                             ,margin$: margin$
+                             ,marginTop: marginTop
+                             ,marginTop$: marginTop$
+                             ,marginBottom: marginBottom
+                             ,marginBottom$: marginBottom$
+                             ,marginLeft: marginLeft
+                             ,marginLeft$: marginLeft$
+                             ,marginRight: marginRight
+                             ,marginRight$: marginRight$
+                             ,fontSize: fontSize
+                             ,fontSize$: fontSize$
+                             ,height: height
+                             ,height$: height$
+                             ,minHeight: minHeight
+                             ,minHeight$: minHeight$
+                             ,maxHeight: maxHeight
+                             ,maxHeight$: maxHeight$
+                             ,width: width
+                             ,width$: width$
+                             ,minWidth: minWidth
+                             ,borderTopWidth: borderTopWidth
+                             ,borderTopWidth$: borderTopWidth$
+                             ,borderBottomWidth: borderBottomWidth
+                             ,borderBottomWidth$: borderBottomWidth$
+                             ,borderLeftWidth: borderLeftWidth
+                             ,borderLeftWidth$: borderLeftWidth$
+                             ,borderRightWidth: borderRightWidth
+                             ,borderRightWidth$: borderRightWidth$
+                             ,letterSpacing: letterSpacing
+                             ,letterSpacing$: letterSpacing$
+                             ,textIndent: textIndent
+                             ,textIndent$: textIndent$
+                             ,wordSpacing: wordSpacing
+                             ,wordSpacing$: wordSpacing$
+                             ,borderRadius: borderRadius
+                             ,borderRadius$: borderRadius$
+                             ,borderTopLeftRadius: borderTopLeftRadius
+                             ,borderTopLeftRadius$: borderTopLeftRadius$
+                             ,borderBottomLeftRadius: borderBottomLeftRadius
+                             ,borderBottomLeftRadius$: borderBottomLeftRadius$
+                             ,borderTopRightRadius: borderTopRightRadius
+                             ,borderTopRightRadius$: borderTopRightRadius$
+                             ,borderBottomRightRadius: borderBottomRightRadius
+                             ,borderBottomRightRadius$: borderBottomRightRadius$
+                             ,borderWidth: borderWidth
+                             ,borderWidth$: borderWidth$
+                             ,bottom: bottom
+                             ,bottom$: bottom$
+                             ,top: top
+                             ,top$: top$
+                             ,left: left
+                             ,left$: left$
+                             ,right: right
+                             ,right$: right$
+                             ,lineHeight: lineHeight
+                             ,lineHeight$: lineHeight$
+                             ,color: color
+                             ,color$: color$
+                             ,backgroundColor: backgroundColor
+                             ,backgroundColor$: backgroundColor$
+                             ,borderColor: borderColor
+                             ,borderColor$: borderColor$
+                             ,borderLeftColor: borderLeftColor
+                             ,borderLeftColor$: borderLeftColor$
+                             ,borderRightColor: borderRightColor
+                             ,borderRightColor$: borderRightColor$
+                             ,borderTopColor: borderTopColor
+                             ,borderTopColor$: borderTopColor$
+                             ,borderBottomColor: borderBottomColor
+                             ,borderBottomColor$: borderBottomColor$
+                             ,outlineColor: outlineColor
+                             ,outlineColor$: outlineColor$
+                             ,Solid: Solid
+                             ,Dotted: Dotted
+                             ,Dashed: Dashed
+                             ,Double: Double
+                             ,Groove: Groove
+                             ,Ridge: Ridge
+                             ,Inset: Inset
+                             ,Outset: Outset
+                             ,borderStyleSerializer: borderStyleSerializer
+                             ,solid: solid
+                             ,dotted: dotted
+                             ,dashed: dashed
+                             ,$double: $double
+                             ,groove: groove
+                             ,ridge: ridge
+                             ,inset: inset
+                             ,outset: outset
+                             ,cssColor: cssColor
+                             ,textLeft: textLeft
+                             ,textRight: textRight
+                             ,textCenter: textCenter
+                             ,textJustify: textJustify
+                             ,opacity: opacity
+                             ,opacity$: opacity$
+                             ,borderStyle: borderStyle
+                             ,border: border};
+   return _elm.TypedStyles.values;
 };
 Elm.VirtualDom = Elm.VirtualDom || {};
 Elm.VirtualDom.make = function (_elm) {
