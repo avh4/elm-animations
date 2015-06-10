@@ -9,6 +9,7 @@ import Easing
 import Time exposing (Time)
 import TypedStyles exposing (..)
 import String
+import Json.Decode as Decode
 
 type alias Model =
     { hover : AnimationState Float
@@ -115,11 +116,23 @@ render address time m =
             [ Html.style style
             , Html.onMouseEnter address <| Hover True
             , Html.onMouseLeave address <| Hover False
-            , Html.onClick address <| Click (50, 20)
+            , Html.on "click" decodeClickLocation (Click >> Signal.message address)
             ]
             [ Html.text m.title
             , Html.div [Html.style rippleStyle] []
             ]
+
+decodeClickLocation : Decode.Decoder (Int,Int)
+decodeClickLocation =
+    Decode.object2 (,)
+        (Decode.object2 (-)
+            (Decode.at ["pageX"] Decode.int)
+            (Decode.at ["target", "offsetLeft"] Decode.int)
+        )
+        (Decode.object2 (-)
+            (Decode.at ["pageY"] Decode.int)
+            (Decode.at ["target", "offsetTop"] Decode.int)
+        )
 
 --.z-depth-0 {
 --  box-shadow: none !important;
