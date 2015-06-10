@@ -93,6 +93,7 @@ render address time m =
                 ]
             , ("overflow", "hidden")
             , ("user-select", "none")
+            , ("-webkit-user-select", "none")
             , ("will-change", "opacity,transform")
             ]
         rippleStyle =
