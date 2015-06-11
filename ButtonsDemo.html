@@ -4937,93 +4937,149 @@ Elm.Main.make = function (_elm) {
    $Animation$Last = Elm.Animation.Last.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
+   $Easing = Elm.Easing.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $List = Elm.List.make(_elm),
    $MaterialDesign$Button = Elm.MaterialDesign.Button.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm);
    var isActive = F2(function (t,
    m) {
-      return A2($MaterialDesign$Button.isActive,
-      t,
-      m.a) || A2($MaterialDesign$Button.isActive,
-      t,
-      m.b);
+      return A2($List.any,
+      function (_v0) {
+         return function () {
+            switch (_v0.ctor)
+            {case "_Tuple2":
+               return A2($Animation$Last.isActive,
+                 t,
+                 _v0._0) || A2($MaterialDesign$Button.isActive,
+                 t,
+                 _v0._1);}
+            _U.badCase($moduleName,
+            "on line 42, column 46 to 86");
+         }();
+      },
+      m);
    });
-   var ButtonB = function (a) {
-      return {ctor: "ButtonB"
-             ,_0: a};
-   };
-   var ButtonA = function (a) {
-      return {ctor: "ButtonA"
-             ,_0: a};
-   };
-   var step = F2(function (_v0,m) {
+   var Button = F2(function (a,b) {
+      return {ctor: "Button"
+             ,_0: a
+             ,_1: b};
+   });
+   var step = F2(function (_v4,m) {
       return function () {
-         switch (_v0.ctor)
+         switch (_v4.ctor)
          {case "_Tuple2":
             return function () {
-                 switch (_v0._1.ctor)
-                 {case "ButtonA":
-                    return _U.replace([["a"
-                                       ,A2($MaterialDesign$Button.step,
-                                       {ctor: "_Tuple2"
-                                       ,_0: _v0._0
-                                       ,_1: _v0._1._0},
-                                       m.a)]],
-                      m);
-                    case "ButtonB":
-                    return _U.replace([["b"
-                                       ,A2($MaterialDesign$Button.step,
-                                       {ctor: "_Tuple2"
-                                       ,_0: _v0._0
-                                       ,_1: _v0._1._0},
-                                       m.b)]],
+                 switch (_v4._1.ctor)
+                 {case "Button":
+                    switch (_v4._1._1.ctor)
+                      {case "Click":
+                         return $List.reverse(A2($List._op["::"],
+                           {ctor: "_Tuple2"
+                           ,_0: A5($Animation$Last.startAnimation,
+                           $Easing.easeOutQuad,
+                           400,
+                           0,
+                           _v4._0,
+                           1.0)(A2($Animation$Last.animationState,
+                           $Animation$Last.$float,
+                           0.0))
+                           ,_1: A2($MaterialDesign$Button.init,
+                           $Color.red,
+                           $Basics.toString(_v4._1._0))},
+                           $List.reverse(A2($List.indexedMap,
+                           F2(function (i$,_v12) {
+                              return function () {
+                                 switch (_v12.ctor)
+                                 {case "_Tuple2":
+                                    return _U.eq(i$,
+                                      _v4._1._0) ? {ctor: "_Tuple2"
+                                                   ,_0: _v12._0
+                                                   ,_1: A2($MaterialDesign$Button.step,
+                                                   {ctor: "_Tuple2"
+                                                   ,_0: _v4._0
+                                                   ,_1: $MaterialDesign$Button.Click(_v4._1._1._0)},
+                                                   _v12._1)} : {ctor: "_Tuple2"
+                                                               ,_0: _v12._0
+                                                               ,_1: _v12._1};}
+                                 _U.badCase($moduleName,
+                                 "on line 30, column 58 to 124");
+                              }();
+                           }),
+                           m))));}
+                      return A2($List.indexedMap,
+                      F2(function (i$,_v16) {
+                         return function () {
+                            switch (_v16.ctor)
+                            {case "_Tuple2":
+                               return _U.eq(i$,
+                                 _v4._1._0) ? {ctor: "_Tuple2"
+                                              ,_0: _v16._0
+                                              ,_1: A2($MaterialDesign$Button.step,
+                                              {ctor: "_Tuple2"
+                                              ,_0: _v4._0
+                                              ,_1: _v4._1._1},
+                                              _v16._1)} : {ctor: "_Tuple2"
+                                                          ,_0: _v16._0
+                                                          ,_1: _v16._1};}
+                            _U.badCase($moduleName,
+                            "on line 33, column 38 to 92");
+                         }();
+                      }),
                       m);}
                  _U.badCase($moduleName,
-                 "between lines 29 and 31");
+                 "between lines 27 and 33");
               }();}
          _U.badCase($moduleName,
-         "between lines 29 and 31");
+         "between lines 27 and 33");
       }();
    });
-   var init = {_: {}
-              ,a: A2($MaterialDesign$Button.init,
-              $Color.orange,
-              "Agree")
-              ,b: A2($MaterialDesign$Button.init,
-              $Color.purple,
-              "Cancel")};
-   var Model = F2(function (a,b) {
-      return {_: {},a: a,b: b};
-   });
-   var buttonB = $Signal.mailbox($MaterialDesign$Button.Hover(false));
-   var buttonA = $Signal.mailbox($MaterialDesign$Button.Hover(false));
+   var init = _L.fromArray([{ctor: "_Tuple2"
+                            ,_0: A2($Animation$Last.animationState,
+                            $Animation$Last.$float,
+                            1.0)
+                            ,_1: A2($MaterialDesign$Button.init,
+                            $Color.green,
+                            "Add")}]);
+   var buttons = $Signal.mailbox(Button(0)($MaterialDesign$Button.Hover(false)));
    var render = F2(function (time,
    model) {
-      return A2($Html.div,
-      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                         ,_0: "padding"
-                                                         ,_1: "8px"}]))]),
-      _L.fromArray([A2($Html.p,
-                   _L.fromArray([]),
-                   _L.fromArray([A3($MaterialDesign$Button.render,
-                   $Signal.message(buttonA.address),
-                   time,
-                   model.a)]))
-                   ,A2($Html.p,
-                   _L.fromArray([]),
-                   _L.fromArray([A3($MaterialDesign$Button.render,
-                   $Signal.message(buttonB.address),
-                   time,
-                   model.b)]))]));
+      return $Html.div(_L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                          ,_0: "padding"
+                                                                          ,_1: "8px"}]))]))($List.indexedMap(F2(function (i,
+      _v20) {
+         return function () {
+            switch (_v20.ctor)
+            {case "_Tuple2":
+               return A2($Html.p,
+                 _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                    ,_0: "transform"
+                                                                    ,_1: A2($Basics._op["++"],
+                                                                    "translate(0,",
+                                                                    A2($Basics._op["++"],
+                                                                    $Basics.toString(10 * (1 - A2($Animation$Last.currentValue,
+                                                                    time,
+                                                                    _v20._0))),
+                                                                    "px)"))}
+                                                                   ,{ctor: "_Tuple2"
+                                                                    ,_0: "opacity"
+                                                                    ,_1: $Basics.toString(A2($Animation$Last.currentValue,
+                                                                    time,
+                                                                    _v20._0))}]))]),
+                 _L.fromArray([A3($MaterialDesign$Button.render,
+                 function ($) {
+                    return $Signal.message(buttons.address)(Button(i)($));
+                 },
+                 time,
+                 _v20._1)]));}
+            _U.badCase($moduleName,
+            "between lines 15 and 18");
+         }();
+      }))(model));
    });
-   var actions = $Signal.mergeMany(_L.fromArray([A2($Signal.map,
-                                                ButtonA,
-                                                buttonA.signal)
-                                                ,A2($Signal.map,
-                                                ButtonB,
-                                                buttonB.signal)]));
+   var actions = $Signal.mergeMany(_L.fromArray([buttons.signal]));
    var main = A5($Animation$Last.animationSignal,
    init,
    step,
@@ -5031,14 +5087,11 @@ Elm.Main.make = function (_elm) {
    isActive,
    actions);
    _elm.Main.values = {_op: _op
-                      ,buttonA: buttonA
-                      ,buttonB: buttonB
+                      ,buttons: buttons
                       ,render: render
-                      ,Model: Model
                       ,init: init
                       ,step: step
-                      ,ButtonA: ButtonA
-                      ,ButtonB: ButtonB
+                      ,Button: Button
                       ,actions: actions
                       ,isActive: isActive
                       ,main: main};
