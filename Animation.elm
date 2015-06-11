@@ -1,4 +1,4 @@
-module Animation.Last where
+module Animation where
 
 import Svg exposing (Svg)
 import Svg.Attributes as Svg

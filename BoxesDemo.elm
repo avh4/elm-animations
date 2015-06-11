@@ -8,7 +8,7 @@ import Color exposing (Color, toRgb, rgba)
 import Time exposing (Time)
 import String
 import Debug
-import Animation.Last exposing (..)
+import Animation exposing (..)
 
 -- --
 -- -- DEMO APP
