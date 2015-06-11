@@ -68,8 +68,8 @@ lighten : Color -> Float -> Color
 lighten color pct = let c = (Color.toHsl color) in
     Color.hsla c.hue c.saturation (c.lightness + pct) c.alpha
 
-render : Signal.Address Action -> Time -> Model -> Html
-render address time m =
+render : (Action -> Signal.Message) -> Time -> Model -> Html
+render message time m =
     let
         hover = currentValue time m.hover
         click = currentValue time m.click
@@ -123,9 +123,9 @@ render address time m =
     in
         Html.div
             [ Html.style style
-            , Html.onMouseEnter address <| Hover True
-            , Html.onMouseLeave address <| Hover False
-            , Html.on "click" decodeClickLocation (Click >> Signal.message address)
+            , Html.on "mouseEnter" (Decode.succeed True) (Hover >> message)
+            , Html.on "mouseLeave" (Decode.succeed False) (Hover >> message)
+            , Html.on "click" decodeClickLocation (Click >> message)
             ]
             [ Html.text m.title
             , Html.div [Html.style rippleStyle] []

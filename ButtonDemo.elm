@@ -19,8 +19,8 @@ buttonB = Signal.mailbox <| Button.Hover False
 render : Time -> Model -> Html
 render time model =
     Html.div [Html.style [("padding", "8px")]]
-        [ Html.p [] [Button.render buttonA.address time model.a]
-        , Html.p [] [Button.render buttonB.address time model.b]
+        [ Html.p [] [Button.render (Signal.message buttonA.address) time model.a]
+        , Html.p [] [Button.render (Signal.message buttonB.address) time model.b]
         --, hoverSlider.html
         --, clickSlider.html
         --, xSlider.html
