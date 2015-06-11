@@ -25,3 +25,4 @@ mmake BoxesDemo
 mmake MoveDemo
 mmake FancyMoveDemo
 mmake ButtonDemo
+mmake ButtonsDemo
