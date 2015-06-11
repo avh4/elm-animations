@@ -2,7 +2,7 @@ import Html exposing (Html)
 import Html.Attributes as Html
 import Html.Events as Html
 import Time exposing (Time)
-import Animation.Last exposing (..)
+import Animation exposing (..)
 import Color exposing (Color)
 import Easing
 import MaterialDesign.Button as Button

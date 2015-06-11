@@ -1,7 +1,7 @@
 import Html exposing (Html)
 import Html.Attributes as Html
 import Time exposing (Time)
-import Animation.Last exposing (..)
+import Animation exposing (..)
 import Color exposing (Color)
 import Easing
 import Mouse
@@ -30,6 +30,7 @@ circle (x,y) f =
             , ("opacity", toString (1-f))
             , width w
             , height h
+            , ("border-radius", "50%")
             , ("margin-left", (toString (x-w//2)) ++ "px")
             , ("margin-top", (toString (y-h//2)) ++ "px")
             ]

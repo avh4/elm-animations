@@ -3,7 +3,7 @@ module MaterialDesign.Button where
 import Html exposing (Html)
 import Html.Attributes as Html
 import Html.Events as Html
-import Animation.Last exposing (..)
+import Animation exposing (..)
 import Color exposing (Color)
 import Easing
 import Time exposing (Time)
@@ -36,9 +36,9 @@ init color title =
 
 isActive : Time -> Model -> Bool
 isActive t m =
-    Animation.Last.isActive t m.hover
-    || Animation.Last.isActive t m.click
-    || Animation.Last.isActive t m.clickFade
+    Animation.isActive t m.hover
+    || Animation.isActive t m.click
+    || Animation.isActive t m.clickFade
 
 step : (Time, Action) -> Model -> Model
 step (time,a) m = case a of

@@ -1,35 +1,38 @@
 import Html exposing (Html)
 import Html.Attributes as Html
 import Time exposing (Time)
-import Animation.Last exposing (..)
+import Animation exposing (..)
 import Color exposing (Color)
 import Easing
 import Mouse
 
-box : Int -> Int -> Html
-box x y =
+box : (Int, Int) -> Html
+box (x,y) =
     let
         style =
             [ background Color.charcoal
-            , width 10
-            , height 10
+            , width 10, height 10
             , ("margin-left", (toString x) ++ "px")
             , ("margin-top", (toString y) ++ "px")
             ]
     in
         Html.div [Html.style style] []
 
-render time model =
-    let
-        ease = currentValue time model
-    in
-        Html.div []
-            [ box (ease |> fst) (ease |> snd)
-            ]
+type alias Model = AnimationState (Int,Int)
+type alias Action = (Int,Int)
 
+render : Time -> Model-> Html
+render time model = box (currentValue time model)
+
+init : Model
 init = animationState (pair int) (40,400)
 
+step : (Time,Action) -> Model -> Model
 step (time,(x,y)) model =
     startAnimation Easing.easeInOutQuad Time.second 0 time (x,y) model
 
-main = animationSignal init step render (isActive) (Signal.sampleOn Mouse.clicks Mouse.position)
+actions : Signal Action
+actions = Signal.sampleOn Mouse.clicks Mouse.position
+
+main : Signal Html
+main = animationSignal init step render isActive actions
