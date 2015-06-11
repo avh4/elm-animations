@@ -14,6 +14,7 @@ import Json.Decode as Decode
 type alias Model =
     { hover : AnimationState Float
     , click : AnimationState Float
+    , clickFade : AnimationState Float
     , clickLocation : (Int, Int)
     , color : Color
     , title : String
@@ -27,13 +28,17 @@ init : Color -> String -> Model
 init color title =
     { hover = onOffAnimationState False
     , click = onOffAnimationState False
+    , clickFade = onOffAnimationState False
     , clickLocation = (0,0)
     , color = color
     , title = title
     }
 
 isActive : Time -> Model -> Bool
-isActive t m = Animation.Last.isActive t m.hover || Animation.Last.isActive t m.click
+isActive t m =
+    Animation.Last.isActive t m.hover
+    || Animation.Last.isActive t m.click
+    || Animation.Last.isActive t m.clickFade
 
 step : (Time, Action) -> Model -> Model
 step (time,a) m = case a of
@@ -42,7 +47,10 @@ step (time,a) m = case a of
         | clickLocation <- (x,y)
         , click <- m.click
             |> clearAnimation 0.0
-            |> startOnOffAnimation Easing.linear 500 0 time True
+            |> startOnOffAnimation Easing.easeOutQuad 400 0 time True
+        , clickFade <- m.clickFade
+            |> clearAnimation 1.0
+            |> startOnOffAnimation Easing.easeInOutQuad 200 200 time False
         }
     Hover b ->
         { m | hover <- m.hover |> startOnOffAnimation Easing.linear 250 0 time b }
@@ -60,11 +68,12 @@ lighten : Color -> Float -> Color
 lighten color pct = let c = (Color.toHsl color) in
     Color.hsla c.hue c.saturation (c.lightness + pct) c.alpha
 
-render : Signal.Address Action -> Time -> Model -> Html
-render address time m =
+render : (Action -> Signal.Message) -> Time -> Model -> Html
+render message time m =
     let
         hover = currentValue time m.hover
         click = currentValue time m.click
+        fade = currentValue time m.clickFade
         (x,y) = m.clickLocation
         color0 = m.color
         color = Easing.color (color0) (lighten color0 0.05) hover
@@ -105,18 +114,18 @@ render address time m =
             , ("height", "20px")
             , ("margin-top", "-10px")
             , ("margin-left", "-10px")
-            , ("opacity", Easing.float 0 1 (click - 0.5 |> abs |> (*) 2 |> (-) 1) |> toString)
+            , ("opacity", fade |> toString)
             , ("pointer-events", "none")
             , ("top", (toString y) ++ "px")
             , ("left", (toString x) ++ "px")
-            , ("transform", "scale(" ++ (Easing.float 1 10 (click*2) |> toString) ++ ")")
+            , ("transform", "scale(" ++ (15*click |> toString) ++ ")")
             ]
     in
         Html.div
             [ Html.style style
-            , Html.onMouseEnter address <| Hover True
-            , Html.onMouseLeave address <| Hover False
-            , Html.on "click" decodeClickLocation (Click >> Signal.message address)
+            , Html.on "mouseenter" (Decode.succeed True) (Hover >> message)
+            , Html.on "mouseleave" (Decode.succeed False) (Hover >> message)
+            , Html.on "click" decodeClickLocation (Click >> message)
             ]
             [ Html.text m.title
             , Html.div [Html.style rippleStyle] []
