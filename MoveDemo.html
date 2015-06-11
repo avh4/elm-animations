@@ -4,18 +4,16 @@ html,body { height: 100%; margin: 0px; }
 </style></head><body><script>
 var Elm = Elm || { Native: {} };
 Elm.Animation = Elm.Animation || {};
-Elm.Animation.Last = Elm.Animation.Last || {};
-Elm.Animation.Last.make = function (_elm) {
+Elm.Animation.make = function (_elm) {
    "use strict";
    _elm.Animation = _elm.Animation || {};
-   _elm.Animation.Last = _elm.Animation.Last || {};
-   if (_elm.Animation.Last.values)
-   return _elm.Animation.Last.values;
+   if (_elm.Animation.values)
+   return _elm.Animation.values;
    var _op = {},
    _N = Elm.Native,
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
-   $moduleName = "Animation.Last",
+   $moduleName = "Animation",
    $AnimationFrame = Elm.AnimationFrame.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
@@ -342,34 +340,34 @@ Elm.Animation.Last.make = function (_elm) {
              ,_0: "background"
              ,_1: toHtmlColor(c)};
    };
-   _elm.Animation.Last.values = {_op: _op
-                                ,toHexDigit: toHexDigit
-                                ,toHexString: toHexString
-                                ,toHtmlColor: toHtmlColor
-                                ,width: width
-                                ,height: height
-                                ,background: background
-                                ,transform: transform
-                                ,rotate: rotate
-                                ,scale: scale
-                                ,easeInt: easeInt
-                                ,Animator: Animator
-                                ,ComplexAnimationState: ComplexAnimationState
-                                ,animateOnOff: animateOnOff
-                                ,currentValue: currentValue
-                                ,startAnimation: startAnimation
-                                ,startOnOffAnimation: startOnOffAnimation
-                                ,clearAnimation: clearAnimation
-                                ,animationState: animationState
-                                ,$float: $float
-                                ,$int: $int
-                                ,pair: pair
-                                ,onOffAnimationState: onOffAnimationState
-                                ,currentTargetValue: currentTargetValue
-                                ,currentOnOffTargetValue: currentOnOffTargetValue
-                                ,isActive: isActive
-                                ,animationSignal: animationSignal};
-   return _elm.Animation.Last.values;
+   _elm.Animation.values = {_op: _op
+                           ,toHexDigit: toHexDigit
+                           ,toHexString: toHexString
+                           ,toHtmlColor: toHtmlColor
+                           ,width: width
+                           ,height: height
+                           ,background: background
+                           ,transform: transform
+                           ,rotate: rotate
+                           ,scale: scale
+                           ,easeInt: easeInt
+                           ,Animator: Animator
+                           ,ComplexAnimationState: ComplexAnimationState
+                           ,animateOnOff: animateOnOff
+                           ,currentValue: currentValue
+                           ,startAnimation: startAnimation
+                           ,startOnOffAnimation: startOnOffAnimation
+                           ,clearAnimation: clearAnimation
+                           ,animationState: animationState
+                           ,$float: $float
+                           ,$int: $int
+                           ,pair: pair
+                           ,onOffAnimationState: onOffAnimationState
+                           ,currentTargetValue: currentTargetValue
+                           ,currentOnOffTargetValue: currentOnOffTargetValue
+                           ,isActive: isActive
+                           ,animationSignal: animationSignal};
+   return _elm.Animation.values;
 };
 Elm.AnimationFrame = Elm.AnimationFrame || {};
 Elm.AnimationFrame.make = function (_elm) {
@@ -4934,7 +4932,7 @@ Elm.Main.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Main",
-   $Animation$Last = Elm.Animation.Last.make(_elm),
+   $Animation = Elm.Animation.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
    $Easing = Elm.Easing.make(_elm),
@@ -4943,6 +4941,9 @@ Elm.Main.make = function (_elm) {
    $Mouse = Elm.Mouse.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm);
+   var actions = A2($Signal.sampleOn,
+   $Mouse.clicks,
+   $Mouse.position);
    var step = F2(function (_v0,
    model) {
       return function () {
@@ -4950,7 +4951,7 @@ Elm.Main.make = function (_elm) {
          {case "_Tuple2":
             switch (_v0._1.ctor)
               {case "_Tuple2":
-                 return A6($Animation$Last.startAnimation,
+                 return A6($Animation.startAnimation,
                    $Easing.easeInOutQuad,
                    $Time.second,
                    0,
@@ -4961,60 +4962,58 @@ Elm.Main.make = function (_elm) {
                    model);}
               break;}
          _U.badCase($moduleName,
-         "on line 33, column 5 to 71");
+         "on line 32, column 5 to 71");
       }();
    });
-   var init = A2($Animation$Last.animationState,
-   $Animation$Last.pair($Animation$Last.$int),
+   var init = A2($Animation.animationState,
+   $Animation.pair($Animation.$int),
    {ctor: "_Tuple2"
    ,_0: 40
    ,_1: 400});
-   var box = F2(function (x,y) {
+   var box = function (_v6) {
       return function () {
-         var style = _L.fromArray([$Animation$Last.background($Color.charcoal)
-                                  ,$Animation$Last.width(10)
-                                  ,$Animation$Last.height(10)
-                                  ,{ctor: "_Tuple2"
-                                   ,_0: "margin-left"
-                                   ,_1: A2($Basics._op["++"],
-                                   $Basics.toString(x),
-                                   "px")}
-                                  ,{ctor: "_Tuple2"
-                                   ,_0: "margin-top"
-                                   ,_1: A2($Basics._op["++"],
-                                   $Basics.toString(y),
-                                   "px")}]);
-         return A2($Html.div,
-         _L.fromArray([$Html$Attributes.style(style)]),
-         _L.fromArray([]));
+         switch (_v6.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var style = _L.fromArray([$Animation.background($Color.charcoal)
+                                          ,$Animation.width(10)
+                                          ,$Animation.height(10)
+                                          ,{ctor: "_Tuple2"
+                                           ,_0: "margin-left"
+                                           ,_1: A2($Basics._op["++"],
+                                           $Basics.toString(_v6._0),
+                                           "px")}
+                                          ,{ctor: "_Tuple2"
+                                           ,_0: "margin-top"
+                                           ,_1: A2($Basics._op["++"],
+                                           $Basics.toString(_v6._1),
+                                           "px")}]);
+                 return A2($Html.div,
+                 _L.fromArray([$Html$Attributes.style(style)]),
+                 _L.fromArray([]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 11 and 19");
       }();
-   });
+   };
    var render = F2(function (time,
    model) {
-      return function () {
-         var ease = A2($Animation$Last.currentValue,
-         time,
-         model);
-         return A2($Html.div,
-         _L.fromArray([]),
-         _L.fromArray([A2(box,
-         $Basics.fst(ease),
-         $Basics.snd(ease))]));
-      }();
+      return box(A2($Animation.currentValue,
+      time,
+      model));
    });
-   var main = A5($Animation$Last.animationSignal,
+   var main = A5($Animation.animationSignal,
    init,
    step,
    render,
-   $Animation$Last.isActive,
-   A2($Signal.sampleOn,
-   $Mouse.clicks,
-   $Mouse.position));
+   $Animation.isActive,
+   actions);
    _elm.Main.values = {_op: _op
                       ,box: box
                       ,render: render
                       ,init: init
                       ,step: step
+                      ,actions: actions
                       ,main: main};
    return _elm.Main.values;
 };
