@@ -25,10 +25,12 @@ init = [ (animationState float 1.0, Button.init Color.green "Add") ]
 
 step : (Time, Action) -> Model -> Model
 step (time,a) m = case a of
-    Button i a' ->
+    Button i (Button.Click c) ->
        (animationState float 0.0 |> startAnimation Easing.easeOutQuad 400 0 time 1.0, (Button.init Color.red (toString i)))
-       :: (List.reverse <| List.indexedMap (\i' (a,m) -> if i' == i then (a,Button.step (time,a') m) else (a,m) ) m)
+       :: (List.reverse <| List.indexedMap (\i' (a,m) -> if i' == i then (a,Button.step (time,Button.Click c) m) else (a,m) ) m)
        |> List.reverse
+    Button i a' ->
+       List.indexedMap (\i' (a,m) -> if i' == i then (a,Button.step (time,a') m) else (a,m) ) m
 
 type Action
     = Button Int Button.Action

@@ -123,8 +123,8 @@ render message time m =
     in
         Html.div
             [ Html.style style
-            , Html.on "mouseEnter" (Decode.succeed True) (Hover >> message)
-            , Html.on "mouseLeave" (Decode.succeed False) (Hover >> message)
+            , Html.on "mouseenter" (Decode.succeed True) (Hover >> message)
+            , Html.on "mouseleave" (Decode.succeed False) (Hover >> message)
             , Html.on "click" decodeClickLocation (Click >> message)
             ]
             [ Html.text m.title
