@@ -30,6 +30,7 @@ circle (x,y) f =
             , ("opacity", toString (1-f))
             , width w
             , height h
+            , ("border-radius", "50%")
             , ("margin-left", (toString (x-w//2)) ++ "px")
             , ("margin-top", (toString (y-h//2)) ++ "px")
             ]
