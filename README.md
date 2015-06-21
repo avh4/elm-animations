@@ -17,3 +17,4 @@
  - [CodyHouse: Animated Headlines](http://codyhouse.co/demo/animated-headlines/)
  - [CodyHouse: Experiments](http://codyhouse.co/category/experiments/)
  - [Animate Your Way to Glory](http://acko.net/blog/animate-your-way-to-glory/)
+ - [Material Interaction demos](http://material.cmiscm.com/)
